@@ -14,6 +14,56 @@ body {
     color: #ffffff;
 }
 
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    text-align: center;
+    color: #ffffff;
+}
+
+.loading-content h2 {
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+    color: #64c8ff;
+}
+
+.progress-bar {
+    width: 300px;
+    height: 8px;
+    background: rgba(100, 200, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #64c8ff 0%, #a78bfa 100%);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+#progress-text {
+    font-size: 0.9rem;
+    color: #a78bfa;
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
 /* Hero Section */
 .hero {
     height: 100vh;

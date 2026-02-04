@@ -37,10 +37,10 @@ function initScene(sectionIndex) {
     let mesh;
     switch(sectionIndex) {
         case 0:
-            mesh = createMe();
+            mesh = createLaptop();
             break;
         case 1:
-            mesh = createLaptop();
+            mesh = createTennis();
             break;
         case 2:
             mesh = createRunning();
@@ -78,11 +78,11 @@ function initScene(sectionIndex) {
 function createLaptop() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Objects/Laptop.glb', (gltf) => {
+        loader.load('Objects/audi_a7_55_tfsi.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
-            model.scale.set(2, 2, 2);
-            model.position.set(0, -1, 0);
+            model.scale.set(.7, .7, .7);
+            model.position.set(1, -1, 0);
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -106,6 +106,58 @@ function createLaptop() {
         group.add(new THREE.Mesh(geometry, material));
     }
     return group;
+}
+
+function createTennis() {
+    const group = new THREE.Group();
+    let modelLoaded = false;
+    
+    if (loader) {
+        loader.load('Objects/Racket-compressed.glb', (gltf) => {
+            const model = gltf.scene;
+            console.log('Tennis racket loaded successfully:', model);
+            modelLoaded = true;
+            // Scale and position the model
+            model.scale.set(6, 6, 6);
+            model.position.set(0, -3, 0);
+            // Ensure all children cast shadows
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            group.add(model);
+        }, (progress) => {
+            console.log('Loading tennis racket:', Math.round(progress.loaded / progress.total * 100) + '%');
+        }, (error) => {
+            console.error('Error loading Racket-compressed.glb:', error);
+            // Load fallback if model fails
+            createFallbackMesh(group, 0xa78bfa);
+        });
+        
+        // Timeout fallback after 5 seconds
+        setTimeout(() => {
+            if (!modelLoaded && group.children.length === 0) {
+                console.warn('Tennis model did not load within 5 seconds, using fallback');
+                createFallbackMesh(group, 0xa78bfa);
+            }
+        }, 5000);
+    } else {
+        console.error('GLTFLoader not initialized');
+        createFallbackMesh(group, 0xa78bfa);
+    }
+    return group;
+}
+
+function createFallbackMesh(group, color) {
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    const material = new THREE.MeshPhongMaterial({
+        color: color,
+        emissive: 0x2a4a5a,
+        shininess: 100
+    });
+    group.add(new THREE.Mesh(geometry, material));
 }
 
 function createMe() {
