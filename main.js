@@ -37,7 +37,7 @@ function initScene(sectionIndex) {
     let mesh;
     switch(sectionIndex) {
         case 0:
-            mesh = createLaptop();
+            mesh = createAbstractObject();
             break;
         case 1:
             mesh = createTennis();
@@ -72,6 +72,40 @@ function initScene(sectionIndex) {
     renderers.push(renderer);
 
     return { scene, camera, renderer, mesh, particles };
+}
+
+
+function createAbstractObject() {
+    const group = new THREE.Group();
+    if (loader) {
+        loader.load('Objects/abstract_shape.glb', (gltf) => {
+            const model = gltf.scene;
+            // Scale and position the model
+            model.scale.set(2, 2, 2);
+            model.position.set(0, 0, 0);
+            // Ensure all children cast shadows
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            group.add(model);
+        }, undefined, (error) => {
+            console.error('Error loading abstract_shape.glb:', error);
+        });
+    } else {
+        console.error('GLTFLoader not initialized');
+        // Fallback: create a simple cube
+        const geometry = new THREE.BoxGeometry(2, 2, 2);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x64c8ff,
+            emissive: 0x2a4a5a,
+            shininess: 100
+        });
+        group.add(new THREE.Mesh(geometry, material));
+    }
+    return group;
 }
 
 // Create different 3D shapes
