@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitchell Kevin - 3D Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Mitchell Kevin</h1>
+            <p class="subtitle">Full Stack Developer & 3D Enthusiast</p>
+            <div class="scroll-hint">Scroll to explore</div>
+        </div>
+    </section>
+
+    <!-- Section 1: About -->
+    <section class="scroll-section" data-section="0">
+        <canvas id="canvas-0" class="section-canvas"></canvas>
+        <div class="section-content">
+            <h2>About Me</h2>
+            <p>I'm passionate about building immersive digital experiences that blend creativity with cutting-edge technology. With expertise in full-stack development and 3D web graphics, I create engaging websites that stand out.</p>
+            <ul class="tags">
+                <li>Problem Solver</li>
+                <li>Creative Developer</li>
+                <li>3D Enthusiast</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 2: Skills -->
+    <section class="scroll-section" data-section="1">
+        <canvas id="canvas-1" class="section-canvas"></canvas>
+        <div class="section-content">
+            <h2>Technical Skills</h2>
+            <p>Experienced in modern web technologies and frameworks. I specialize in creating performant applications with beautiful user interfaces and smooth animations.</p>
+            <ul class="skills-list">
+                <li>JavaScript / TypeScript</li>
+                <li>Three.js & WebGL</li>
+                <li>React & Node.js</li>
+                <li>HTML5 / CSS3</li>
+                <li>Web Performance</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 3: Projects -->
+    <section class="scroll-section" data-section="2">
+        <canvas id="canvas-2" class="section-canvas"></canvas>
+        <div class="section-content">
+            <h2>My Projects</h2>
+            <p>I build ambitious projects that push the boundaries of what's possible on the web. From interactive portfolios to real-time data visualizations, each project tells a story.</p>
+            <ul class="projects-list">
+                <li>3D Interactive Websites</li>
+                <li>Real-time Visualizations</li>
+                <li>Performance-Optimized Apps</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 4: Contact -->
+    <section class="scroll-section" data-section="3">
+        <canvas id="canvas-3" class="section-canvas"></canvas>
+        <div class="section-content">
+            <h2>Get In Touch</h2>
+            <p>Interested in collaborating? I'm always open to discussing new projects, creative ideas, and opportunities to be part of your vision.</p>
+            <div class="contact-info">
+                <p><strong>Email:</strong> mitchell@example.com</p>
+                <p><strong>GitHub:</strong> github.com/MitchellKevin</p>
+                <p><strong>Location:</strong> Web</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Mitchell Kevin. All rights reserved.</p>
+    </footer>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js"
+        }
+    }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

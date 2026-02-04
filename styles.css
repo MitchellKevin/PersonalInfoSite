@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    color: #ffffff;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f3a5f 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(100, 200, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 10;
+    animation: fadeInDown 1s ease-out;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #64c8ff 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+}
+
+.hero-content .subtitle {
+    font-size: 1.5rem;
+    color: #a78bfa;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+.scroll-hint {
+    font-size: 0.9rem;
+    color: #64c8ff;
+    animation: bounce 2s infinite;
+    margin-top: 40px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scroll Sections */
+.scroll-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 100px 60px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    position: relative;
+    gap: 60px;
+}
+
+.scroll-section:nth-child(even) {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3a5f 100%);
+}
+
+.scroll-section:nth-child(even) .section-content {
+    order: -1;
+}
+
+.section-canvas {
+    width: 45%;
+    height: 600px;
+    display: block;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(100, 200, 255, 0.15);
+}
+
+.section-content {
+    width: 50%;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #64c8ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.section-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #d0d0d0;
+    margin-bottom: 25px;
+}
+
+.tags, .skills-list, .projects-list {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.tags li, .skills-list li, .projects-list li {
+    display: inline-block;
+    background: rgba(100, 200, 255, 0.1);
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    padding: 8px 16px;
+    margin: 5px 10px 5px 0;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #a78bfa;
+    transition: all 0.3s ease;
+}
+
+.tags li:hover, .skills-list li:hover, .projects-list li:hover {
+    background: rgba(100, 200, 255, 0.2);
+    border-color: rgba(100, 200, 255, 0.6);
+    transform: translateY(-3px);
+}
+
+.skills-list {
+    display: block;
+}
+
+.skills-list li, .projects-list li {
+    display: block;
+    margin: 12px 0;
+    padding: 12px 20px;
+}
+
+.contact-info {
+    margin-top: 30px;
+}
+
+.contact-info p {
+    margin: 15px 0;
+    font-size: 1.05rem;
+}
+
+.contact-info strong {
+    color: #64c8ff;
+}
+
+/* Footer */
+.footer {
+    background: rgba(10, 10, 10, 0.95);
+    padding: 40px;
+    text-align: center;
+    border-top: 1px solid rgba(100, 200, 255, 0.2);
+    color: #a78bfa;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .scroll-section {
+        flex-direction: column;
+        padding: 80px 40px;
+        gap: 40px;
+    }
+
+    .scroll-section:nth-child(even) .section-content {
+        order: 1;
+    }
+
+    .section-canvas {
+        width: 100%;
+        height: 400px;
+    }
+
+    .section-content {
+        width: 100%;
+    }
+
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+
+    .section-content h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .scroll-section {
+        padding: 60px 30px;
+    }
+
+    .section-canvas {
+        height: 300px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-content .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .section-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .section-content p {
+        font-size: 0.95rem;
+    }
+}
+
