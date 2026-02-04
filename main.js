@@ -37,16 +37,16 @@ function initScene(sectionIndex) {
     let mesh;
     switch(sectionIndex) {
         case 0:
-            mesh = createLaptop();
+            mesh = createMe();
             break;
         case 1:
-            mesh = createCar();
+            mesh = createLaptop();
             break;
         case 2:
             mesh = createRunning();
             break;
         case 3:
-            mesh = createBed();
+            mesh = createCamera();
             break;
         default:
             mesh = createLaptop();
@@ -78,11 +78,11 @@ function initScene(sectionIndex) {
 function createLaptop() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Laptop.glb', (gltf) => {
+        loader.load('Objects/Laptop.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
             model.scale.set(2, 2, 2);
-            model.position.set(0, 0, 0);
+            model.position.set(0, -1, 0);
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -108,14 +108,47 @@ function createLaptop() {
     return group;
 }
 
+function createMe() {
+    const group = new THREE.Group();
+    if (loader) {
+        loader.load('Objects/Me.glb', (gltf) => {
+            const model = gltf.scene;
+            // Scale and position the model
+            model.scale.set(.05, .05, .05);
+            model.position.set(0, -2, 0);
+            // Ensure all children cast shadows
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            group.add(model);
+        }, undefined, (error) => {
+            console.error('Error loading Me.glb:', error);
+        });
+    } else {
+        console.error('GLTFLoader not initialized');
+        // Fallback: create a simple cube
+        const geometry = new THREE.BoxGeometry(2, 2, 2);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x64c8ff,
+            emissive: 0x2a4a5a,
+            shininess: 100
+        });
+        group.add(new THREE.Mesh(geometry, material));
+    }
+    return group;
+}
+
 function createCar() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Car.glb', (gltf) => {
+        loader.load('Objects/Car.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
             model.scale.set(1.2, 1.2, 1.2);
-            model.position.set(0, 0, 0);
+            model.position.set(0, -.5, 0);
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -144,7 +177,7 @@ function createCar() {
 function createRunning() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Running.glb', (gltf) => {
+        loader.load('Objects/Running.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
             model.scale.set(2, 2, 2);
@@ -174,14 +207,14 @@ function createRunning() {
     return group;
 }
 
-function createBed() {
+function createCamera() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Bed.glb', (gltf) => {
+        loader.load('Objects/Camera.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
-            model.scale.set(2, 2, 2);
-            model.position.set(0, 0, 0);
+            model.scale.set(.8, .8, .8);
+            model.position.set(0, -1, 0);
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -191,7 +224,7 @@ function createBed() {
             });
             group.add(model);
         }, undefined, (error) => {
-            console.error('Error loading Laptop.glb:', error);
+            console.error('Error loading Camera.glb:', error);
         });
     } else {
         console.error('GLTFLoader not initialized');
@@ -205,47 +238,6 @@ function createBed() {
         group.add(new THREE.Mesh(geometry, material));
     }
     return group;
-}
-
-function createCube() {
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0x64c8ff,
-        emissive: 0x2a4a5a,
-        shininess: 100
-    });
-    return new THREE.Mesh(geometry, material);
-}
-
-
-function createSphere() {
-    const geometry = new THREE.IcosahedronGeometry(1.5, 4);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0xff6b9d,
-        emissive: 0x5a2a4a,
-        shininess: 100
-    });
-    return new THREE.Mesh(geometry, material);
-}
-
-function createTorus() {
-    const geometry = new THREE.TorusGeometry(1.5, 0.5, 16, 100);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0xa78bfa,
-        emissive: 0x3a2a5a,
-        shininess: 100
-    });
-    return new THREE.Mesh(geometry, material);
-}
-
-function createPyramid() {
-    const geometry = new THREE.ConeGeometry(1.5, 3, 4);
-    const material = new THREE.MeshPhongMaterial({
-        color: 0x64ffb0,
-        emissive: 0x2a5a3a,
-        shininess: 100
-    });
-    return new THREE.Mesh(geometry, material);
 }
 
 function createParticles() {
@@ -300,7 +292,7 @@ function animate() {
 
     scenes.forEach((sceneData, index) => {
         // Update rotation based on scroll
-        sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
+        // sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
         sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
 
         // Bobbing animation
