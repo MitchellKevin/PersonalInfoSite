@@ -1,6 +1,9 @@
 # PersonalInfoSite
 
-
+Checklist:
+* Markdown update
+* Figma design schets
+* New website
 
 Inspiratie:
 https://www.awwwards.com/sites/concept-bmw-i-peachweb-builder
