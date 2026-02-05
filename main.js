@@ -236,8 +236,11 @@ function createCar() {
         loader.load('Objects/audi_com.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
-            model.scale.set(.7, .7, .7);
+            model.scale.set(.65, .65, .65);
             model.position.set(0, -1, 0);
+            model.rotation.y = 1.5;
+            model.rotation.z = 0;
+            model.rotation.x = 0;
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -246,6 +249,25 @@ function createCar() {
                 }
             });
             group.add(model);
+
+            // AI assested code start
+
+            // --- new: collect wheel meshes by name (wheel|rim|tyre|tire) and save on model ---
+            const wheels = [];
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    const name = (child.name || '').toLowerCase();
+                    if (/wheel|rim|tyre|tire/.test(name)) {
+                        wheels.push(child);
+                    }
+                }
+            });
+            model.userData.wheels = wheels;
+            if (wheels.length === 0) {
+                console.warn('No wheels detected in car model. Check child names in the model (open console to inspect).');
+            }
+            // --- end new ---
+            // AI assisted code start
         }, undefined, (error) => {
             console.error('Error loading Laptop.glb:', error);
         });
@@ -361,7 +383,7 @@ function animate() {
         // sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
 
         // Bobbing animation
-        sceneData.mesh.position.y = Math.sin(Date.now() * 0.005) * 0.05;
+        // sceneData.mesh.position.y = Math.sin(Date.now() * 0.005) * 0.05;
 
         if (sceneData.sectionIndex === 1) {
             const canvas = document.getElementById(`canvas-${index}`);
@@ -387,6 +409,49 @@ function animate() {
 
             // Update position
             sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x || 0) * 0.12;
+        }
+
+        if (sceneData.sectionIndex === 2) {
+            const canvas = document.getElementById(`canvas-${index}`);
+            const rect = canvas.getBoundingClientRect();
+
+            // eenvoudige progress: 0 wanneer onder viewport, 1 wanneer top van canvas bij top viewport
+            let progress = .7 - (rect.top / window.innerHeight);
+            progress = Math.max(0, Math.min(1, progress));
+
+            // target rotatie
+            const targetY = -0.8 * progress;
+            const targetX = 0 * progress;
+            const targetZ = 0 * progress;
+
+
+            const startX= -5;
+            const endX = -1;
+            const targetPositionX = startX + (endX - startX) * progress;
+
+            // soepele interpolatie (lerp)
+            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
+            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
+            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
+            // Update position
+            sceneData.mesh.position.x += (targetPositionX - (sceneData.mesh.position.x || 0)) * 0.12;
+
+            // AI assisted code start
+            // --- new: rotate wheels if present ---
+            const model = (sceneData.mesh && sceneData.mesh.children && sceneData.mesh.children[0]) ? sceneData.mesh.children[0] : sceneData.mesh;
+            const wheels = model && model.userData ? model.userData.wheels || [] : [];
+            if (wheels.length > 0) {
+                // rotation speed — adjust multiplier to taste. Use progress so wheels spin more when car moves into view.
+                const speed = 20; 
+                if(progress < 1){
+                wheels.forEach(w => {
+                    // rotate around local X axis (change axis if necessary)
+                    w.rotation.x += speed;
+                });
+            }
+            }
+            // --- end new ---
+        // AI assisted code end
         }
 
         // Update particle positions
