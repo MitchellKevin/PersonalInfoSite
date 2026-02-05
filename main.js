@@ -1,4 +1,4 @@
-// Import Three.js and GLTFLoader as ES modules
+// Import Three.js and GLTFLoader
 import * as THREE from 'three';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
 
@@ -33,7 +33,6 @@ function initScene(sectionIndex) {
     pointLight2.position.set(-5, -5, 5);
     scene.add(pointLight2);
 
-    // Create different 3D objects based on section
     let mesh;
     switch(sectionIndex) {
         case 0:
@@ -56,8 +55,6 @@ function initScene(sectionIndex) {
     mesh.receiveShadow = true;
     scene.add(mesh);
 
-    // Add floating particles
-
     scenes.push({
         scene,
         camera,
@@ -78,10 +75,8 @@ function createAbstractObject() {
     if (loader) {
         loader.load('Objects/abstract_shape.glb', (gltf) => {
             const model = gltf.scene;
-            // Scale and position the model
             model.scale.set(2, 2, 2);
             model.position.set(0, 0, 0);
-            // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -94,7 +89,6 @@ function createAbstractObject() {
         });
     } else {
         console.error('GLTFLoader not initialized');
-        // Fallback: create a simple cube
         const geometry = new THREE.BoxGeometry(2, 2, 2);
         const material = new THREE.MeshPhongMaterial({
             color: 0x64c8ff,
@@ -106,16 +100,13 @@ function createAbstractObject() {
     return group;
 }
 
-// Create different 3D shapes
 function createLaptop() {
     const group = new THREE.Group();
     if (loader) {
         loader.load('Objects/Laptop.glb', (gltf) => {
             const model = gltf.scene;
-            // Scale and position the model
             model.scale.set(1.5, 1.5, 1.5);
             model.position.set(0, -1, 0);
-            // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -128,7 +119,6 @@ function createLaptop() {
         });
     } else {
         console.error('GLTFLoader not initialized');
-        // Fallback: create a simple cube
         const geometry = new THREE.BoxGeometry(2, 2, 2);
         const material = new THREE.MeshPhongMaterial({
             color: 0x64c8ff,
@@ -149,15 +139,11 @@ function createTennis() {
             const model = gltf.scene;
             console.log('Tennis racket loaded successfully:', model);
             modelLoaded = true;
-            // Scale and position the model
             model.scale.set(7, 7, 7);
             model.position.set(1.5, -5, 0);
             model.rotation.y = 0;
             model.rotation.z = 0;
             model.rotation.x = 0;
-            // model.rotation.y = 0;
-            // model.rotation.z = 0; // Rotate 90 degrees around the X-axis
-            // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -169,11 +155,9 @@ function createTennis() {
             console.log('Loading tennis racket:', Math.round(progress.loaded / progress.total * 100) + '%');
         }, (error) => {
             console.error('Error loading Racket-compressed.glb:', error);
-            // Load fallback if model fails
             createFallbackMesh(group, 0xa78bfa);
         });
         
-        // Timeout fallback after 5 seconds
         setTimeout(() => {
             if (!modelLoaded && group.children.length === 0) {
                 console.warn('Tennis model did not load within 5 seconds, using fallback');
@@ -202,10 +186,8 @@ function createMe() {
     if (loader) {
         loader.load('Objects/Me.glb', (gltf) => {
             const model = gltf.scene;
-            // Scale and position the model
             model.scale.set(.05, .05, .05);
             model.position.set(0, -2, 0);
-            // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -218,7 +200,6 @@ function createMe() {
         });
     } else {
         console.error('GLTFLoader not initialized');
-        // Fallback: create a simple cube
         const geometry = new THREE.BoxGeometry(2, 2, 2);
         const material = new THREE.MeshPhongMaterial({
             color: 0x64c8ff,
@@ -235,13 +216,11 @@ function createCar() {
     if (loader) {
         loader.load('Objects/audi_com.glb', (gltf) => {
             const model = gltf.scene;
-            // Scale and position the model
             model.scale.set(.65, .65, .65);
             model.position.set(0, -1, 0);
             model.rotation.y = 1.5;
             model.rotation.z = 0;
             model.rotation.x = 0;
-            // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -273,7 +252,6 @@ function createCar() {
         });
     } else {
         console.error('GLTFLoader not initialized');
-        // Fallback: create a simple cube
         const geometry = new THREE.BoxGeometry(2, 2, 2);
         const material = new THREE.MeshPhongMaterial({
             color: 0x64c8ff,
@@ -290,10 +268,8 @@ function createRunning() {
     if (loader) {
         loader.load('Objects/Running.glb', (gltf) => {
             const model = gltf.scene;
-            // Scale and position the model
             model.scale.set(2, 2, 2);
             model.position.set(0, 0, 0);
-            // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -306,7 +282,6 @@ function createRunning() {
         });
     } else {
         console.error('GLTFLoader not initialized');
-        // Fallback: create a simple cube
         const geometry = new THREE.BoxGeometry(2, 2, 2);
         const material = new THREE.MeshPhongMaterial({
             color: 0x64c8ff,
@@ -323,10 +298,8 @@ function createHardware() {
     if (loader) {
         loader.load('Objects/Camera.glb', (gltf) => {
             const model = gltf.scene;
-            // Scale and position the model
             model.scale.set(.8, .8, .8);
             model.position.set(0, -1, 0);
-            // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -339,7 +312,6 @@ function createHardware() {
         });
     } else {
         console.error('GLTFLoader not initialized');
-        // Fallback: create a simple cube
         const geometry = new THREE.BoxGeometry(2, 2, 2);
         const material = new THREE.MeshPhongMaterial({
             color: 0x64c8ff,
@@ -357,7 +329,7 @@ window.addEventListener('scroll', () => {
     scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
 });
 
-// Handle window resize
+//Responisveness
 window.addEventListener('resize', () => {
     scenes.forEach((sceneData, index) => {
         const canvas = document.getElementById(`canvas-${index}`);
@@ -370,35 +342,29 @@ window.addEventListener('resize', () => {
     });
 });
 
-// Animation loop
+// Animations for each object individually
 function animate() {
     requestAnimationFrame(animate);
 
-    // Get scroll position for rotation calculation
+    // Get scroll position
     const scrollRotation = window.scrollY * 0.005;
 
     scenes.forEach((sceneData, index) => {
 
+        // Laptop animation
         if (sceneData.sectionIndex == 3){
             sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.03;
             sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
         }
-        // Update rotation based on scroll
-        // sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
-        // sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
-
-        // Bobbing animation
-        // sceneData.mesh.position.y = Math.sin(Date.now() * 0.005) * 0.05;
-
+ 
+        // Tennis animation
         if (sceneData.sectionIndex === 1) {
             const canvas = document.getElementById(`canvas-${index}`);
             const rect = canvas.getBoundingClientRect();
 
-            // eenvoudige progress: 0 wanneer onder viewport, 1 wanneer top van canvas bij top viewport
             let progress = 1 - (rect.top / window.innerHeight);
             progress = Math.max(0, Math.min(1, progress));
 
-            // target rotatie
             const targetZ = 1.1 * progress;
             const targetY = -0.4 * progress;
             const targetX = 0.3 * progress;
@@ -407,24 +373,21 @@ function animate() {
             const endX = -1;
             const targetPositionX = startX + (endX - startX) * progress;
 
-            // soepele interpolatie (lerp)
             sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
             sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
             sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
 
-            // Update position
             sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x || 0) * 0.12;
         }
 
+        // Car animation
         if (sceneData.sectionIndex === 2) {
             const canvas = document.getElementById(`canvas-${index}`);
             const rect = canvas.getBoundingClientRect();
 
-            // eenvoudige progress: 0 wanneer onder viewport, 1 wanneer top van canvas bij top viewport
             let progress = .7 - (rect.top / window.innerHeight);
             progress = Math.max(0, Math.min(1, progress));
 
-            // target rotatie
             const targetY = -0.8 * progress;
             const targetX = 0 * progress;
             const targetZ = 0 * progress;
@@ -434,41 +397,23 @@ function animate() {
             const endX = -1;
             const targetPositionX = startX + (endX - startX) * progress;
 
-            // soepele interpolatie (lerp)
             sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
             sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
             sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
-            // Update position
+
             sceneData.mesh.position.x += (targetPositionX - (sceneData.mesh.position.x || 0)) * 0.12;
 
-            // AI assisted code start
-            // --- new: rotate wheels if present ---
             const model = (sceneData.mesh && sceneData.mesh.children && sceneData.mesh.children[0]) ? sceneData.mesh.children[0] : sceneData.mesh;
             const wheels = model && model.userData ? model.userData.wheels || [] : [];
             if (wheels.length > 0) {
-                // rotation speed — adjust multiplier to taste. Use progress so wheels spin more when car moves into view.
                 const speed = 20; 
                 if(progress < 1){
                 wheels.forEach(w => {
-                    // rotate around local X axis (change axis if necessary)
                     w.rotation.x -= speed;
                 });
             }
             }
-            // --- end new ---
-        // AI assisted code end
         }
-
-        // Update particle positions
-        // const positionAttribute = sceneData.particles.geometry.getAttribute('position');
-        // const posArray = positionAttribute.array;
-
-        // for (let i = 1; i < posArray.length; i += 3) {
-        //     posArray[i] += Math.sin(Date.now() * 0.0001 + i) * 0.001;
-        // }
-        // positionAttribute.needsUpdate = true;
-
-        // Render
         renderers[index].render(sceneData.scene, sceneData.camera);
     });
 }
