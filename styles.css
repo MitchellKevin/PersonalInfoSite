@@ -154,10 +154,10 @@ body {
 }
 
 .section-canvas {
-    width: 45%;
-    height: 600px;
+    width: 65%;
+    height: 1200px;
     display: block;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     box-shadow: white;
 }
 

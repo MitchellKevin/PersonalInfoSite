@@ -15,7 +15,7 @@ function initScene(sectionIndex) {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setClearColor(0x0a0a0a, 0.1);
+    renderer.setClearColor(0x0a0a0a, 0);
     renderer.shadowMap.enabled = true;
 
     camera.position.z = 5;
@@ -63,7 +63,8 @@ function initScene(sectionIndex) {
         camera,
         mesh,
         rotationX: 0,
-        rotationY: 0
+        rotationY: 0,
+        sectionIndex
     });
 
     renderers.push(renderer);
@@ -149,8 +150,13 @@ function createTennis() {
             console.log('Tennis racket loaded successfully:', model);
             modelLoaded = true;
             // Scale and position the model
-            model.scale.set(6, 6, 6);
-            model.position.set(0, -3, 0);
+            model.scale.set(7, 7, 7);
+            model.position.set(1.5, -5, 0);
+            model.rotation.y = 0;
+            model.rotation.z = 0;
+            model.rotation.x = 0;
+            // model.rotation.y = 0;
+            // model.rotation.z = 0; // Rotate 90 degrees around the X-axis
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -352,12 +358,36 @@ function animate() {
     scenes.forEach((sceneData, index) => {
         // Update rotation based on scroll
         // sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
-        sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
+        // sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
 
         // Bobbing animation
-        sceneData.mesh.position.y = Math.sin(Date.now() * 0.0005) * 0.15;
+        sceneData.mesh.position.y = Math.sin(Date.now() * 0.005) * 0.05;
 
+        if (sceneData.sectionIndex === 1) {
+            const canvas = document.getElementById(`canvas-${index}`);
+            const rect = canvas.getBoundingClientRect();
 
+            // eenvoudige progress: 0 wanneer onder viewport, 1 wanneer top van canvas bij top viewport
+            let progress = 1 - (rect.top / window.innerHeight);
+            progress = Math.max(0, Math.min(1, progress));
+
+            // target rotatie
+            const targetZ = 1.1 * progress;
+            const targetY = -0.4 * progress;
+            const targetX = 0.3 * progress;
+
+            const startX= 3;
+            const endX = -1;
+            const targetPositionX = startX + (endX - startX) * progress;
+
+            // soepele interpolatie (lerp)
+            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
+            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
+            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
+
+            // Update position
+            sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x || 0) * 0.12;
+        }
 
         // Update particle positions
         // const positionAttribute = sceneData.particles.geometry.getAttribute('position');
