@@ -451,7 +451,7 @@ function animate() {
                 if(progress < 1){
                 wheels.forEach(w => {
                     // rotate around local X axis (change axis if necessary)
-                    w.rotation.x += speed;
+                    w.rotation.x -= speed;
                 });
             }
             }
