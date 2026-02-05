@@ -43,10 +43,10 @@ function initScene(sectionIndex) {
             mesh = createTennis();
             break;
         case 2:
-            mesh = createRunning();
+            mesh = createCar();
             break;
         case 3:
-            mesh = createCamera();
+            mesh = createHardware();
             break;
         default:
             mesh = createLaptop();
@@ -57,21 +57,18 @@ function initScene(sectionIndex) {
     scene.add(mesh);
 
     // Add floating particles
-    const particles = createParticles();
-    scene.add(particles);
 
     scenes.push({
         scene,
         camera,
         mesh,
-        particles,
         rotationX: 0,
         rotationY: 0
     });
 
     renderers.push(renderer);
 
-    return { scene, camera, renderer, mesh, particles };
+    return { scene, camera, renderer, mesh };
 }
 
 
@@ -230,11 +227,11 @@ function createMe() {
 function createCar() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Objects/Car.glb', (gltf) => {
+        loader.load('Objects/audi_com.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
-            model.scale.set(1.2, 1.2, 1.2);
-            model.position.set(0, -.5, 0);
+            model.scale.set(.7, .7, .7);
+            model.position.set(0, -1, 0);
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -293,7 +290,7 @@ function createRunning() {
     return group;
 }
 
-function createCamera() {
+function createHardware() {
     const group = new THREE.Group();
     if (loader) {
         loader.load('Objects/Camera.glb', (gltf) => {
@@ -324,30 +321,6 @@ function createCamera() {
         group.add(new THREE.Mesh(geometry, material));
     }
     return group;
-}
-
-function createParticles() {
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 50;
-    const posArray = new Float32Array(particlesCount * 3);
-
-    for (let i = 0; i < particlesCount * 3; i += 3) {
-        posArray[i] = (Math.random() - 0.5) * 8;
-        posArray[i + 1] = (Math.random() - 0.5) * 8;
-        posArray[i + 2] = (Math.random() - 0.5) * 8;
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.05,
-        color: 0xa78bfa,
-        sizeAttenuation: true,
-        transparent: true,
-        opacity: 0.6
-    });
-
-    return new THREE.Points(particlesGeometry, particlesMaterial);
 }
 
 // Handle scroll events
@@ -384,18 +357,16 @@ function animate() {
         // Bobbing animation
         sceneData.mesh.position.y = Math.sin(Date.now() * 0.0005) * 0.15;
 
-        // Animate particles
-        sceneData.particles.rotation.x += 0.0001;
-        sceneData.particles.rotation.y += 0.0002;
+
 
         // Update particle positions
-        const positionAttribute = sceneData.particles.geometry.getAttribute('position');
-        const posArray = positionAttribute.array;
+        // const positionAttribute = sceneData.particles.geometry.getAttribute('position');
+        // const posArray = positionAttribute.array;
 
-        for (let i = 1; i < posArray.length; i += 3) {
-            posArray[i] += Math.sin(Date.now() * 0.0001 + i) * 0.001;
-        }
-        positionAttribute.needsUpdate = true;
+        // for (let i = 1; i < posArray.length; i += 3) {
+        //     posArray[i] += Math.sin(Date.now() * 0.0001 + i) * 0.001;
+        // }
+        // positionAttribute.needsUpdate = true;
 
         // Render
         renderers[index].render(sceneData.scene, sceneData.camera);
