@@ -46,7 +46,7 @@ function initScene(sectionIndex) {
             mesh = createCar();
             break;
         case 3:
-            mesh = createHardware();
+            mesh = createLaptop();
             break;
         default:
             mesh = createLaptop();
@@ -110,11 +110,11 @@ function createAbstractObject() {
 function createLaptop() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Objects/audi_a7_55_tfsi.glb', (gltf) => {
+        loader.load('Objects/Laptop.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
-            model.scale.set(.7, .7, .7);
-            model.position.set(1, -1, 0);
+            model.scale.set(1.5, 1.5, 1.5);
+            model.position.set(0, -1, 0);
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -378,6 +378,11 @@ function animate() {
     const scrollRotation = window.scrollY * 0.005;
 
     scenes.forEach((sceneData, index) => {
+
+        if (sceneData.sectionIndex == 3){
+            sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.03;
+            sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
+        }
         // Update rotation based on scroll
         // sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
         // sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
