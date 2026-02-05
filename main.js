@@ -15,7 +15,7 @@ function initScene(sectionIndex) {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setClearColor(0x0a0a0a, 0.1);
+    renderer.setClearColor(0x0a0a0a, 0);
     renderer.shadowMap.enabled = true;
 
     camera.position.z = 5;
@@ -43,10 +43,10 @@ function initScene(sectionIndex) {
             mesh = createTennis();
             break;
         case 2:
-            mesh = createRunning();
+            mesh = createCar();
             break;
         case 3:
-            mesh = createCamera();
+            mesh = createLaptop();
             break;
         default:
             mesh = createLaptop();
@@ -57,21 +57,19 @@ function initScene(sectionIndex) {
     scene.add(mesh);
 
     // Add floating particles
-    const particles = createParticles();
-    scene.add(particles);
 
     scenes.push({
         scene,
         camera,
         mesh,
-        particles,
         rotationX: 0,
-        rotationY: 0
+        rotationY: 0,
+        sectionIndex
     });
 
     renderers.push(renderer);
 
-    return { scene, camera, renderer, mesh, particles };
+    return { scene, camera, renderer, mesh };
 }
 
 
@@ -112,11 +110,11 @@ function createAbstractObject() {
 function createLaptop() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Objects/audi_a7_55_tfsi.glb', (gltf) => {
+        loader.load('Objects/Laptop.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
-            model.scale.set(.7, .7, .7);
-            model.position.set(1, -1, 0);
+            model.scale.set(1.5, 1.5, 1.5);
+            model.position.set(0, -1, 0);
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -152,8 +150,13 @@ function createTennis() {
             console.log('Tennis racket loaded successfully:', model);
             modelLoaded = true;
             // Scale and position the model
-            model.scale.set(6, 6, 6);
-            model.position.set(0, -3, 0);
+            model.scale.set(7, 7, 7);
+            model.position.set(1.5, -5, 0);
+            model.rotation.y = 0;
+            model.rotation.z = 0;
+            model.rotation.x = 0;
+            // model.rotation.y = 0;
+            // model.rotation.z = 0; // Rotate 90 degrees around the X-axis
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -230,11 +233,14 @@ function createMe() {
 function createCar() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Objects/Car.glb', (gltf) => {
+        loader.load('Objects/audi_com.glb', (gltf) => {
             const model = gltf.scene;
             // Scale and position the model
-            model.scale.set(1.2, 1.2, 1.2);
-            model.position.set(0, -.5, 0);
+            model.scale.set(.65, .65, .65);
+            model.position.set(0, -1, 0);
+            model.rotation.y = 1.5;
+            model.rotation.z = 0;
+            model.rotation.x = 0;
             // Ensure all children cast shadows
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -243,6 +249,25 @@ function createCar() {
                 }
             });
             group.add(model);
+
+            // AI assested code start
+
+            // --- new: collect wheel meshes by name (wheel|rim|tyre|tire) and save on model ---
+            const wheels = [];
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    const name = (child.name || '').toLowerCase();
+                    if (/wheel|rim|tyre|tire/.test(name)) {
+                        wheels.push(child);
+                    }
+                }
+            });
+            model.userData.wheels = wheels;
+            if (wheels.length === 0) {
+                console.warn('No wheels detected in car model. Check child names in the model (open console to inspect).');
+            }
+            // --- end new ---
+            // AI assisted code start
         }, undefined, (error) => {
             console.error('Error loading Laptop.glb:', error);
         });
@@ -293,7 +318,7 @@ function createRunning() {
     return group;
 }
 
-function createCamera() {
+function createHardware() {
     const group = new THREE.Group();
     if (loader) {
         loader.load('Objects/Camera.glb', (gltf) => {
@@ -326,30 +351,6 @@ function createCamera() {
     return group;
 }
 
-function createParticles() {
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 50;
-    const posArray = new Float32Array(particlesCount * 3);
-
-    for (let i = 0; i < particlesCount * 3; i += 3) {
-        posArray[i] = (Math.random() - 0.5) * 8;
-        posArray[i + 1] = (Math.random() - 0.5) * 8;
-        posArray[i + 2] = (Math.random() - 0.5) * 8;
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.05,
-        color: 0xa78bfa,
-        sizeAttenuation: true,
-        transparent: true,
-        opacity: 0.6
-    });
-
-    return new THREE.Points(particlesGeometry, particlesMaterial);
-}
-
 // Handle scroll events
 let scrollProgress = 0;
 window.addEventListener('scroll', () => {
@@ -377,25 +378,95 @@ function animate() {
     const scrollRotation = window.scrollY * 0.005;
 
     scenes.forEach((sceneData, index) => {
+
+        if (sceneData.sectionIndex == 3){
+            sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.03;
+            sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
+        }
         // Update rotation based on scroll
         // sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
-        sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
+        // sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.3;
 
         // Bobbing animation
-        sceneData.mesh.position.y = Math.sin(Date.now() * 0.0005) * 0.15;
+        // sceneData.mesh.position.y = Math.sin(Date.now() * 0.005) * 0.05;
 
-        // Animate particles
-        sceneData.particles.rotation.x += 0.0001;
-        sceneData.particles.rotation.y += 0.0002;
+        if (sceneData.sectionIndex === 1) {
+            const canvas = document.getElementById(`canvas-${index}`);
+            const rect = canvas.getBoundingClientRect();
+
+            // eenvoudige progress: 0 wanneer onder viewport, 1 wanneer top van canvas bij top viewport
+            let progress = 1 - (rect.top / window.innerHeight);
+            progress = Math.max(0, Math.min(1, progress));
+
+            // target rotatie
+            const targetZ = 1.1 * progress;
+            const targetY = -0.4 * progress;
+            const targetX = 0.3 * progress;
+
+            const startX= 3;
+            const endX = -1;
+            const targetPositionX = startX + (endX - startX) * progress;
+
+            // soepele interpolatie (lerp)
+            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
+            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
+            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
+
+            // Update position
+            sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x || 0) * 0.12;
+        }
+
+        if (sceneData.sectionIndex === 2) {
+            const canvas = document.getElementById(`canvas-${index}`);
+            const rect = canvas.getBoundingClientRect();
+
+            // eenvoudige progress: 0 wanneer onder viewport, 1 wanneer top van canvas bij top viewport
+            let progress = .7 - (rect.top / window.innerHeight);
+            progress = Math.max(0, Math.min(1, progress));
+
+            // target rotatie
+            const targetY = -0.8 * progress;
+            const targetX = 0 * progress;
+            const targetZ = 0 * progress;
+
+
+            const startX= -5;
+            const endX = -1;
+            const targetPositionX = startX + (endX - startX) * progress;
+
+            // soepele interpolatie (lerp)
+            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
+            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
+            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
+            // Update position
+            sceneData.mesh.position.x += (targetPositionX - (sceneData.mesh.position.x || 0)) * 0.12;
+
+            // AI assisted code start
+            // --- new: rotate wheels if present ---
+            const model = (sceneData.mesh && sceneData.mesh.children && sceneData.mesh.children[0]) ? sceneData.mesh.children[0] : sceneData.mesh;
+            const wheels = model && model.userData ? model.userData.wheels || [] : [];
+            if (wheels.length > 0) {
+                // rotation speed — adjust multiplier to taste. Use progress so wheels spin more when car moves into view.
+                const speed = 20; 
+                if(progress < 1){
+                wheels.forEach(w => {
+                    // rotate around local X axis (change axis if necessary)
+                    w.rotation.x -= speed;
+                });
+            }
+            }
+            // --- end new ---
+        // AI assisted code end
+        }
 
         // Update particle positions
-        const positionAttribute = sceneData.particles.geometry.getAttribute('position');
-        const posArray = positionAttribute.array;
+        // const positionAttribute = sceneData.particles.geometry.getAttribute('position');
+        // const posArray = positionAttribute.array;
 
-        for (let i = 1; i < posArray.length; i += 3) {
-            posArray[i] += Math.sin(Date.now() * 0.0001 + i) * 0.001;
-        }
-        positionAttribute.needsUpdate = true;
+        // for (let i = 1; i < posArray.length; i += 3) {
+        //     posArray[i] += Math.sin(Date.now() * 0.0001 + i) * 0.001;
+        // }
+        // positionAttribute.needsUpdate = true;
 
         // Render
         renderers[index].render(sceneData.scene, sceneData.camera);
