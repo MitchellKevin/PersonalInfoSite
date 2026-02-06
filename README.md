@@ -99,3 +99,9 @@ https://convert3d.org/app/compress
 https://www.turbosquid.com/3d-models/digital-vintage-watch-2331531
 https://www.turbosquid.com/3d-models/bowling-ball-1981604
 https://www.fab.com/listings/4549cb8c-cfca-4c43-b5b2-108848d7356b
+
+Leerdoelen:
+1. Beter leren ontwerp met gebruik van 3D objecten, om een extra element te kunnen gebruiken, om websites unieker te maken en om meer ruimte te krijgen op een website.
+2. Beter worden in animaties, meer wow factoor kunnnen vertonenen.
+3. Meer conceptualiseren hoe gebruikers kunnen interacteren met de website, om de gebruiker het gevoel te geven dat zij bepalend zijn voor hoe de website reageert.
+
