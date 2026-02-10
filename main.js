@@ -165,19 +165,43 @@ function rollDiceOverBoard(diceMesh){
 document.getElementById('rollDiceBtn').onclick = async () => {
   if(moving) return;
 
-  // Dobbelstenen animatie over het bord
   const roll1 = rollDiceOverBoard(dice1);
   const roll2 = rollDiceOverBoard(dice2);
 
   const [value1, value2] = await Promise.all([roll1, roll2]);
   const total = value1 + value2;
 
-  // Toon resultaat groot voor de gebruiker
-  showDiceResult(value1, value2);
+  // Toon de 2D dobbelsteen afbeeldingen
+  showDiceEyesImages(value1, value2);
 
-  // Pawn beweegt het totaal aantal vakjes
   movePawn(total);
 };
+
+function showDiceEyesImages(value1, value2) {
+    const overlay = document.createElement('div');
+    overlay.className = 'dice-eyes-overlay';
+
+    // Dobbelsteen 1
+    const dice1Img = document.createElement('img');
+    dice1Img.src = `Objects/diceFaces/dice${value1}.png`;
+    dice1Img.className = 'dice-face-img';
+    overlay.appendChild(dice1Img);
+
+    // Dobbelsteen 2
+    const dice2Img = document.createElement('img');
+    dice2Img.src = `Objects/diceFaces/dice${value2}.png`;
+    dice2Img.className = 'dice-face-img';
+    overlay.appendChild(dice2Img);
+
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+        overlay.style.transition = 'opacity 0.5s';
+        overlay.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(overlay), 500);
+    }, 2000);
+}
+
 
 // === FUNCTIE OM RESULTAAT TE TONEN ===
 function showDiceResult(value1, value2) {

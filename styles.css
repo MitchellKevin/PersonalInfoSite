@@ -38,16 +38,21 @@ h1 {
   background: #333;
 }
 
-.dice-result-overlay {
+.dice-eyes-overlay {
     position: fixed;
-    top: 15%;
+    top: 10%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.7);
-    padding: 1em 2.5em;
-    border-radius: 1em;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    padding: 20px 40px;
+    border-radius: 15px;
     z-index: 9999;
-    font-family: sans-serif;
     pointer-events: none;
     opacity: 1;
+}
+
+.dice-face-img {
+    width: 6em;
+    height: 6em;
 }
