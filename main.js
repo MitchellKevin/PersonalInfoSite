@@ -5,7 +5,7 @@
 
 // import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
 
-
+// import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // Array to store scenes and their renderers
 const scenes = [];
 const renderers = [];
@@ -25,7 +25,7 @@ function initScene(sectionIndex) {
     camera.lookAt(0, 0, 0);
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2);
     scene.add(ambientLight);
 
     const pointLight1 = new THREE.PointLight(0x64c8ff, 1, 100);
@@ -37,7 +37,7 @@ function initScene(sectionIndex) {
     pointLight2.position.set(-5, -5, 5);
     scene.add(pointLight2);
 
-    let pawn; // globaal beschikbaar
+    // let pawn; // globaal beschikbaar
 
 // const loader = new GLTFLoader();
 // loader.load('Objects/pawn.glb', (gltf) => {
@@ -83,7 +83,7 @@ function createBoard() {
 //   board.rotation.y = Math.PI / -2; //turn 2
 //   board.rotation.y = Math.PI / -1; //turn 3
 //   board.rotation.y = Math.PI / 2; //final turn
-//   board.rotation.z = Math.PI / 2; //start scene
+  board.rotation.z = Math.PI / 2; //start scene
 
   board.receiveShadow = true;
 
@@ -122,7 +122,6 @@ function animate() {
         // sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x) * 0.12;
 
 
-
   scenes.forEach(({ scene, camera }, index) => {
     renderers[index].render(scene, camera);
   });
@@ -153,3 +152,26 @@ function cardPopUp(){
         }, 300);
     }, 2000);
 }
+
+function cardAnimationPersonal(){}
+
+function cardAnimationStudents(){}
+
+function diceLogic(){
+    const dice1 = Math.floor(Math.random() * 6) + 1;
+    const dice2 = Math.floor(Math.random() * 6) + 1;
+    const totalEyes = dice1 + dice2;
+    return [dice1, dice2, totalEyes];
+}
+
+function diceAnimation(){
+    const [dice1, dice2] = diceLogic();
+    // Animate the dice rolling
+}
+
+function boardTurnAnimation(){}
+
+function randomFactsStudents(){}
+
+function playerAnimation(){}
+
