@@ -2,12 +2,15 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
 
+// Loading screen
+
+
 // Array to store scenes and their renderers
 const scenes = [];
 const renderers = [];
 const loader = new GLTFLoader();
 
-// Initialize scenes for each section
+// Initilze scenes for each section
 function initScene(sectionIndex) {
     const canvas = document.getElementById(`canvas-${sectionIndex}`);
     const scene = new THREE.Scene();
@@ -36,7 +39,7 @@ function initScene(sectionIndex) {
     let mesh;
     switch(sectionIndex) {
         case 0:
-            mesh = createAbstractObject();
+            mesh = createMe();
             break;
         case 1:
             mesh = createTennis();
@@ -184,10 +187,10 @@ function createFallbackMesh(group, color) {
 function createMe() {
     const group = new THREE.Group();
     if (loader) {
-        loader.load('Objects/Me.glb', (gltf) => {
+        loader.load('Objects/none.glb', (gltf) => {
             const model = gltf.scene;
             model.scale.set(.05, .05, .05);
-            model.position.set(0, -2, 0);
+            model.position.set(0, -4, 0);
             model.traverse((child) => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -228,6 +231,7 @@ function createCar() {
                 }
             });
             group.add(model);
+
 
             // AI assested code start
 
@@ -351,6 +355,9 @@ function animate() {
 
     scenes.forEach((sceneData, index) => {
 
+        // if(sceneData.sectionIndex === 0){
+        //     sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.03;
+        // }
         // Laptop animation
         if (sceneData.sectionIndex == 3){
             sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.03;
@@ -373,11 +380,11 @@ function animate() {
             const endX = -1;
             const targetPositionX = startX + (endX - startX) * progress;
 
-            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
-            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
-            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
+            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z)) * 0.12;
+            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y)) * 0.12;
+            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x)) * 0.12;
 
-            sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x || 0) * 0.12;
+            sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x) * 0.12;
         }
 
         // Car animation
@@ -394,14 +401,14 @@ function animate() {
 
 
             const startX= -5;
-            const endX = -1;
+            const endX = -1.5;
             const targetPositionX = startX + (endX - startX) * progress;
 
-            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
-            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
-            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
+            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y)) * 0.12;
+            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x)) * 0.12;
+            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z)) * 0.12;
 
-            sceneData.mesh.position.x += (targetPositionX - (sceneData.mesh.position.x || 0)) * 0.12;
+            sceneData.mesh.position.x += (targetPositionX - (sceneData.mesh.position.x)) * 0.12;
 
             const model = (sceneData.mesh && sceneData.mesh.children && sceneData.mesh.children[0]) ? sceneData.mesh.children[0] : sceneData.mesh;
             const wheels = model && model.userData ? model.userData.wheels || [] : [];
@@ -418,11 +425,11 @@ function animate() {
     });
 }
 
-// Initialize all scenes
 document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < 4; i++) {
         initScene(i);
     }
     animate();
 });
+
 

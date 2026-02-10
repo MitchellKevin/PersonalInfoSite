@@ -99,3 +99,14 @@ https://convert3d.org/app/compress
 https://www.turbosquid.com/3d-models/digital-vintage-watch-2331531
 https://www.turbosquid.com/3d-models/bowling-ball-1981604
 https://www.fab.com/listings/4549cb8c-cfca-4c43-b5b2-108848d7356b
+
+
+
+Wat heb je gedaan?
+
+
+Hoeveel tijd heeft dat gekost?
+
+
+Wat heb ik vandaag geleerd?
+
