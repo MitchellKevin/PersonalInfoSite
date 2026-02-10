@@ -3,6 +3,8 @@
 // import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
 // Loading screen
 
+// import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
+
 
 // Array to store scenes and their renderers
 const scenes = [];
@@ -23,7 +25,7 @@ function initScene(sectionIndex) {
     camera.lookAt(0, 0, 0);
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
 
     const pointLight1 = new THREE.PointLight(0x64c8ff, 1, 100);
@@ -34,6 +36,16 @@ function initScene(sectionIndex) {
     const pointLight2 = new THREE.PointLight(0xa78bfa, 0.8, 100);
     pointLight2.position.set(-5, -5, 5);
     scene.add(pointLight2);
+
+    let pawn; // globaal beschikbaar
+
+// const loader = new GLTFLoader();
+// loader.load('Objects/pawn.glb', (gltf) => {
+//     pawn = gltf.scene;
+//     pawn.scale.set(0.5, 0.5, 0.5); // pas aan naar je bord
+//     pawn.position.set(0, 0.2, 0);   // startpositie boven het bord
+//     scene.add(pawn);
+// });
 
     let mesh;
     mesh = createBoard();
@@ -74,6 +86,14 @@ function createBoard() {
   return board;
 }
 
+// function createDice() {
+//   const dice = new THREE.Mesh();
+//   const diceModel = new GLTFLoader().load('Objects/dicemodel.glb', (gltf) => {
+//     dice.add(gltf.scene);
+//   });
+//   dice.position.set(0, 2, 0);
+//   return diceModel;
+// }
 
 function animate() {
   requestAnimationFrame(animate);
