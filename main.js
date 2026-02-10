@@ -1,177 +1,123 @@
-// Import Three.js and GLTFLoader
-// import * as THREE from 'three';
-// import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
-// Loading screen
+// === BASIC SETUP ===
+const canvas = document.getElementById('gameCanvas');
+const scene = new THREE.Scene();
 
-// import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
+const camera = new THREE.PerspectiveCamera(
+  60,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  100
+);
+camera.position.set(0, 7, 12);
+camera.lookAt(0, 0, 0);
 
-// import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-// Array to store scenes and their renderers
-const scenes = [];
-const renderers = [];
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setClearColor(0x0a0a0a, 0);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
 
-// Initilze scenes for each section
-function initScene(sectionIndex) {
-    const canvas = document.getElementById(`gameCanvas`);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+// === LIGHTING ===
+scene.add(new THREE.AmbientLight(0xffffff, 2));
+const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+dirLight.position.set(5, 10, 5);
+scene.add(dirLight);
 
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setClearColor(0x0a0a0a, 0);
-    renderer.shadowMap.enabled = true;
+// === BOARD ===
+const boardTexture = new THREE.TextureLoader().load('Objects/monopoly_board.png');
+const board = new THREE.Mesh(
+  new THREE.BoxGeometry(13, 0.2, 13),
+  new THREE.MeshStandardMaterial({ map: boardTexture })
+);
+board.rotation.x = -Math.PI / 1.1;
+scene.add(board);
 
-    camera.position.set(0, 6, 12);
-    camera.lookAt(0, 0, 0);
+// === TILE POSITIES ===
+const tiles = [
+  new THREE.Vector3(-5.3, -1.2, 5.8),
+  new THREE.Vector3(-4.8, -1.2, 5.8),
+  new THREE.Vector3(-3.4, -1.2, 5.8),
+  new THREE.Vector3(-2.2, -1.2, 5.8),
+  new THREE.Vector3(-1.0, -1.2, 5.8),
+  new THREE.Vector3(0.2, -1.2, 5.8),
+  new THREE.Vector3(1.4, -1.2, 5.8),
+  new THREE.Vector3(2.6, -1.2, 5.8),
+  new THREE.Vector3(3.8, -1.2, 5.8),
+  new THREE.Vector3(5.0, -1.2, 5.8)
+];
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2);
-    scene.add(ambientLight);
+// === PAWN (3D SHAPES) ===
+const pawnGroup = new THREE.Group();
 
-    const pointLight1 = new THREE.PointLight(0x64c8ff, 1, 100);
-    pointLight1.position.set(5, 5, 5);
-    pointLight1.castShadow = true;
-    scene.add(pointLight1);
+// basis cilinder
+const baseGeom = new THREE.CylinderGeometry(0.3, 0.3, 0.4, 32);
+const baseMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+const baseMesh = new THREE.Mesh(baseGeom, baseMat);
+baseMesh.position.y = 0.2;
+pawnGroup.add(baseMesh);
 
-    const pointLight2 = new THREE.PointLight(0xa78bfa, 0.8, 100);
-    pointLight2.position.set(-5, -5, 5);
-    scene.add(pointLight2);
+// hoofd bol
+const headGeom = new THREE.SphereGeometry(0.2, 32, 32);
+const headMat = new THREE.MeshStandardMaterial({ color: 0xff5555 });
+const headMesh = new THREE.Mesh(headGeom, headMat);
+headMesh.position.y = 0.55;
+pawnGroup.add(headMesh);
 
-    // let pawn; // globaal beschikbaar
+pawnGroup.position.copy(tiles[0]);
+scene.add(pawnGroup);
 
-// const loader = new GLTFLoader();
-// loader.load('Objects/pawn.glb', (gltf) => {
-//     pawn = gltf.scene;
-//     pawn.scale.set(0.5, 0.5, 0.5); // pas aan naar je bord
-//     pawn.position.set(0, 0.2, 0);   // startpositie boven het bord
-//     scene.add(pawn);
-// });
+let currentTile = 0;
+let moving = false;
 
-    let mesh;
-    mesh = createBoard();
+// === MOVE FUNCTION ===
+function movePawn(steps) {
+  if (moving) return;
+  moving = true;
+  let remaining = steps;
 
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    scene.add(mesh);
+  function step() {
+    if (remaining <= 0) {
+      moving = false;
+      return;
+    }
+    const nextIndex = (currentTile + 1) % tiles.length;
+    const target = tiles[nextIndex];
 
-    scenes.push({
-        scene,
-        camera,
-        mesh,
-        rotationX: 0,
-        rotationY: 0,
-        sectionIndex
-    });
+    function animateStep() {
+      pawnGroup.position.lerp(target, 0.12);
+      pawnGroup.lookAt(target.x, pawnGroup.position.y, target.z);
 
-    renderers.push(renderer);
+      if (pawnGroup.position.distanceTo(target) < 0.02) {
+        pawnGroup.position.copy(target);
+        currentTile = nextIndex;
+        remaining--;
+        step();
+      } else {
+        requestAnimationFrame(animateStep);
+      }
+    }
+    animateStep();
+  }
 
-    return { scene, camera, renderer, mesh };
+  step();
 }
 
-function createBoard() {
-  const textureLoader = new THREE.TextureLoader();
-  const boardTexture = textureLoader.load('Objects/monopoly_board.png');
+// === DICE BUTTON ===
+document.getElementById('rollDiceBtn').onclick = () => {
+  if (moving) return;
+  const roll = Math.floor(Math.random() * 6) + 1;
+  movePawn(roll);
+};
 
-  const boardGeometry = new THREE.BoxGeometry(13, .2, 13);
-  const boardMaterial = new THREE.MeshStandardMaterial({
-    map: boardTexture
-  });
-
-  const board = new THREE.Mesh(boardGeometry, boardMaterial);
-  board.rotation.x = -Math.PI / 1.1;
-  board.rotation.y = Math.PI / .1; //start
-//   board.rotation.y = Math.PI / -2; //turn 2
-//   board.rotation.y = Math.PI / -1; //turn 3
-//   board.rotation.y = Math.PI / 2; //final turn
-  board.rotation.z = Math.PI / 2; //start scene
-
-  board.receiveShadow = true;
-
-  return board;
-}
-
-// function createDice() {
-//   const dice = new THREE.Mesh();
-//   const diceModel = new GLTFLoader().load('Objects/dicemodel.glb', (gltf) => {
-//     dice.add(gltf.scene);
-//   });
-//   dice.position.set(0, 2, 0);
-//   return diceModel;
-// }
-
+// === ANIMATE LOOP ===
 function animate() {
   requestAnimationFrame(animate);
-  
-        //   const canvas = document.getElementById(`canvas-${index}`);
-        // const rect = canvas.getBoundingClientRect();
-
-        // let progress = 1 - (rect.top / window.innerHeight);
-        // progress = Math.max(0, Math.min(1, progress));
-        // const targetZ = 1.1 * progress;
-        // const targetY = -0.4 * progress;
-        // const targetX = 0.3 * progress;
-
-        // const startX= 3;
-        // const endX = -1;
-        // const targetPositionX = startX + (endX - startX) * progress;
-
-        // sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z)) * 0.12;
-        // sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y)) * 0.12;
-        // sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x)) * 0.12;
-
-        // sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x) * 0.12;
-
-
-  scenes.forEach(({ scene, camera }, index) => {
-    renderers[index].render(scene, camera);
-  });
+  renderer.render(scene, camera);
 }
+animate();
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    for (let i = 0; i < 4; i++) {
-        initScene(i);
-    }
-    animate();
+// === WINDOW RESIZE ===
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-function cardPopUp(){
-    const card = document.createElement('div');
-    card.className = 'card-popup';
-    card.innerHTML = 'Card Pop Up!';
-    document.body.appendChild(card);
-
-    setTimeout(() => {
-        card.classList.add('visible');
-    }, 100);
-
-    setTimeout(() => {
-        card.classList.remove('visible');
-        setTimeout(() => {
-            document.body.removeChild(card);
-        }, 300);
-    }, 2000);
-}
-
-function cardAnimationPersonal(){}
-
-function cardAnimationStudents(){}
-
-function diceLogic(){
-    const dice1 = Math.floor(Math.random() * 6) + 1;
-    const dice2 = Math.floor(Math.random() * 6) + 1;
-    const totalEyes = dice1 + dice2;
-    return [dice1, dice2, totalEyes];
-}
-
-function diceAnimation(){
-    const [dice1, dice2] = diceLogic();
-    // Animate the dice rolling
-}
-
-function boardTurnAnimation(){}
-
-function randomFactsStudents(){}
-
-function playerAnimation(){}
-

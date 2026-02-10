@@ -16,3 +16,24 @@ h1 {
   height: 100vh;
   display: block;
 }
+
+
+
+#rollDiceBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  background: #111;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+#rollDiceBtn:hover {
+  background: #333;
+}
