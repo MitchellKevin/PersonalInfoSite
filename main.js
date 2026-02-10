@@ -79,7 +79,11 @@ function createBoard() {
 
   const board = new THREE.Mesh(boardGeometry, boardMaterial);
   board.rotation.x = -Math.PI / 1.1;
-  board.rotation.y = Math.PI / .1;
+  board.rotation.y = Math.PI / .1; //start
+//   board.rotation.y = Math.PI / -2; //turn 2
+//   board.rotation.y = Math.PI / -1; //turn 3
+//   board.rotation.y = Math.PI / 2; //final turn
+  board.rotation.z = Math.PI / 2; //start scene
 
   board.receiveShadow = true;
 
@@ -97,6 +101,27 @@ function createBoard() {
 
 function animate() {
   requestAnimationFrame(animate);
+  
+        //   const canvas = document.getElementById(`canvas-${index}`);
+        // const rect = canvas.getBoundingClientRect();
+
+        // let progress = 1 - (rect.top / window.innerHeight);
+        // progress = Math.max(0, Math.min(1, progress));
+        // const targetZ = 1.1 * progress;
+        // const targetY = -0.4 * progress;
+        // const targetX = 0.3 * progress;
+
+        // const startX= 3;
+        // const endX = -1;
+        // const targetPositionX = startX + (endX - startX) * progress;
+
+        // sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z)) * 0.12;
+        // sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y)) * 0.12;
+        // sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x)) * 0.12;
+
+        // sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x) * 0.12;
+
+
 
   scenes.forEach(({ scene, camera }, index) => {
     renderers[index].render(scene, camera);
@@ -111,3 +136,20 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
 });
 
+function cardPopUp(){
+    const card = document.createElement('div');
+    card.className = 'card-popup';
+    card.innerHTML = 'Card Pop Up!';
+    document.body.appendChild(card);
+
+    setTimeout(() => {
+        card.classList.add('visible');
+    }, 100);
+
+    setTimeout(() => {
+        card.classList.remove('visible');
+        setTimeout(() => {
+            document.body.removeChild(card);
+        }, 300);
+    }, 2000);
+}
