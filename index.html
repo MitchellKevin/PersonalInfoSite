@@ -1,47 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Arcade Driving Experience</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>MITCHOPOLY</title>
 </head>
 <body>
-  <div id="info">
-    <h1>3D Arcade Driving</h1>
-    <p><strong>WASD</strong> to drive</p>
-  </div>
-  <script>
-    (function loadThreeAndMain(){
-      const urls = [
-        'https://unpkg.com/three@r128/build/three.min.js',
-        'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
-      ];
-      let i = 0;
-      function tryLoad() {
-        if (i >= urls.length) {
-          console.error('Failed to load Three.js from CDNs.');
-          const info = document.getElementById('info');
-          if (info) info.innerHTML += '<p style="color: #f88">Failed to load Three.js. Check network.</p>';
-          return;
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js"
         }
-        const s = document.createElement('script');
-        s.src = urls[i++];
-        s.onload = () => {
-          // three loaded, now load main
-          const m = document.createElement('script');
-          m.src = 'main.js';
-          document.body.appendChild(m);
-        };
-        s.onerror = () => {
-          console.warn('Three.js CDN failed, trying next...');
-          tryLoad();
-        };
-        document.head.appendChild(s);
-      }
-      tryLoad();
-    })();
-  </script>
+    }
+    </script>
+    <canvas id="gameCanvas"></canvas>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
