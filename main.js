@@ -28,22 +28,22 @@ const board = new THREE.Mesh(
   new THREE.BoxGeometry(13, 0.2, 13),
   new THREE.MeshStandardMaterial({ map: boardTexture })
 );
-board.rotation.x = -Math.PI / 1.1;
+board.rotation.x = -Math.PI / 0.5;
 scene.add(board);
 
 // === TILE POSITIES ===
-const tiles = [
-  new THREE.Vector3(-5.3, -1.2, 5.8),
-  new THREE.Vector3(-4.8, -1.2, 5.8),
-  new THREE.Vector3(-3.4, -1.2, 5.8),
-  new THREE.Vector3(-2.2, -1.2, 5.8),
-  new THREE.Vector3(-1.0, -1.2, 5.8),
-  new THREE.Vector3(0.2, -1.2, 5.8),
-  new THREE.Vector3(1.4, -1.2, 5.8),
-  new THREE.Vector3(2.6, -1.2, 5.8),
-  new THREE.Vector3(3.8, -1.2, 5.8),
-  new THREE.Vector3(5.0, -1.2, 5.8)
-];
+const tiles = [];
+const min = -5.8, max = 5.8, step = (max - min) / 9;
+
+// Bovenkant: x van min->max, z = max
+for(let i=0;i<10;i++) tiles.push(new THREE.Vector3(min + step*i,0.2,max));
+// Rechterkant: x=max, z van max->min
+for(let i=1;i<10;i++) tiles.push(new THREE.Vector3(max,0.2,max - step*i));
+// Onderkant: x van max->min, z=min
+for(let i=1;i<10;i++) tiles.push(new THREE.Vector3(max - step*i,0.2,min));
+// Linkerkant: x=min, z van min->max
+for(let i=1;i<10;i++) tiles.push(new THREE.Vector3(min,0.2,min + step*i));
+
 
 // === PAWN (3D SHAPES) ===
 const pawnGroup = new THREE.Group();
