@@ -1,428 +1,264 @@
-// Import Three.js and GLTFLoader
-import * as THREE from 'three';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
+// Wait for global THREE to be available, then initialize the app
+(function waitForThree() {
+  if (typeof THREE === 'undefined') {
+    console.warn('THREE not defined yet, retrying...');
+    setTimeout(waitForThree, 50);
+    return;
+  }
 
-// Array to store scenes and their renderers
-const scenes = [];
-const renderers = [];
-const loader = new GLTFLoader();
+// ============================================================================
+// SCENE SETUP
+// ============================================================================
 
-// Initialize scenes for each section
-function initScene(sectionIndex) {
-    const canvas = document.getElementById(`canvas-${sectionIndex}`);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb); // Sky blue
 
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setClearColor(0x0a0a0a, 0);
-    renderer.shadowMap.enabled = true;
+// ============================================================================
+// RENDERER SETUP (FULLSCREEN)
+// ============================================================================
 
-    camera.position.z = 5;
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.BasicShadowMap; // faster, simpler shadows
+renderer.setClearColor(0x87ceeb, 1);
+document.body.appendChild(renderer.domElement);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
+// ============================================================================
+// CAMERA SETUP
+// ============================================================================
 
-    const pointLight1 = new THREE.PointLight(0x64c8ff, 1, 100);
-    pointLight1.position.set(5, 5, 5);
-    pointLight1.castShadow = true;
-    scene.add(pointLight1);
+const camera = new THREE.PerspectiveCamera(
+  70,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+camera.position.set(0, 10, 18); // slightly lower and closer for arcade feel
+camera.lookAt(0, 2, 0);
 
-    const pointLight2 = new THREE.PointLight(0xa78bfa, 0.8, 100);
-    pointLight2.position.set(-5, -5, 5);
-    scene.add(pointLight2);
+// ============================================================================
+// LIGHTING
+// ============================================================================
 
-    let mesh;
-    switch(sectionIndex) {
-        case 0:
-            mesh = createAbstractObject();
-            break;
-        case 1:
-            mesh = createTennis();
-            break;
-        case 2:
-            mesh = createCar();
-            break;
-        case 3:
-            mesh = createLaptop();
-            break;
-        default:
-            mesh = createLaptop();
-    }
+// Stylized cartoon lighting
+const hemi = new THREE.HemisphereLight(0xfff5d6, 0x6b8cff, 0.9); // warm sky, cool ground
+scene.add(hemi);
 
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    scene.add(mesh);
+// Soft key light for color and contrast
+const key = new THREE.DirectionalLight(0xffffff, 0.8);
+key.position.set(30, 60, 30);
+key.castShadow = true;
+key.shadow.mapSize.width = 512;
+key.shadow.mapSize.height = 512;
+scene.add(key);
 
-    scenes.push({
-        scene,
-        camera,
-        mesh,
-        rotationX: 0,
-        rotationY: 0,
-        sectionIndex
-    });
+// Rim light (colored) for cartoon pop
+const rim = new THREE.PointLight(0x00d4ff, 0.6, 200);
+rim.position.set(-30, 30, -30);
+scene.add(rim);
 
-    renderers.push(renderer);
+// ============================================================================
+// GROUND PLANE
+// ============================================================================
 
-    return { scene, camera, renderer, mesh };
+// Stylized flat ground with wide stripes (cartoon feel)
+const groundGeometry = new THREE.PlaneGeometry(1000, 1000);
+const gCanvas = document.createElement('canvas');
+gCanvas.width = 512;
+gCanvas.height = 512;
+const gctx = gCanvas.getContext('2d');
+// Draw horizontal stripes
+gctx.fillStyle = '#4dd964';
+gctx.fillRect(0, 0, 512, 512);
+gctx.fillStyle = '#2bbf3a';
+for (let i = 0; i < 6; i++) {
+  gctx.fillRect(0, i * 85, 512, 42);
 }
+const gTexture = new THREE.CanvasTexture(gCanvas);
+gTexture.wrapS = THREE.RepeatWrapping;
+gTexture.wrapT = THREE.RepeatWrapping;
+gTexture.repeat.set(4, 4);
+const groundMaterial = new THREE.MeshToonMaterial({ map: gTexture, color: 0x4dd964 });
+const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = 0;
+ground.receiveShadow = true;
+scene.add(ground);
 
+// ============================================================================
+// CAR OBJECT
+// ============================================================================
 
-function createAbstractObject() {
-    const group = new THREE.Group();
-    if (loader) {
-        loader.load('Objects/abstract_shape.glb', (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(2, 2, 2);
-            model.position.set(0, 0, 0);
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            group.add(model);
-        }, undefined, (error) => {
-            console.error('Error loading abstract_shape.glb:', error);
-        });
-    } else {
-        console.error('GLTFLoader not initialized');
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x64c8ff,
-            emissive: 0x2a4a5a,
-            shininess: 100
-        });
-        group.add(new THREE.Mesh(geometry, material));
-    }
-    return group;
-}
-
-function createLaptop() {
-    const group = new THREE.Group();
-    if (loader) {
-        loader.load('Objects/Laptop.glb', (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(1.5, 1.5, 1.5);
-            model.position.set(0, -1, 0);
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            group.add(model);
-        }, undefined, (error) => {
-            console.error('Error loading Laptop.glb:', error);
-        });
-    } else {
-        console.error('GLTFLoader not initialized');
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x64c8ff,
-            emissive: 0x2a4a5a,
-            shininess: 100
-        });
-        group.add(new THREE.Mesh(geometry, material));
-    }
-    return group;
-}
-
-function createTennis() {
-    const group = new THREE.Group();
-    let modelLoaded = false;
+const car = {
+  mesh: null,
+  position: new THREE.Vector3(0, 1, 0),
+  velocity: new THREE.Vector3(0, 0, 0),
+  rotation: 0, // Y-axis rotation in radians
+  
+  // Movement parameters
+  acceleration: 0.4,
+  maxSpeed: 0.5,
+  friction: 0.92,
+  rotationSpeed: 0.08,
+  
+  init() {
+    // Create car body (box) - toon material, flat shading
+    const bodyGeometry = new THREE.BoxGeometry(2, 1.5, 4);
+    const bodyMaterial = new THREE.MeshToonMaterial({ color: 0xff3b3b });
+    this.mesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    this.mesh.position.copy(this.position);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
+    scene.add(this.mesh);
     
-    if (loader) {
-        loader.load('Objects/Racket-compressed.glb', (gltf) => {
-            const model = gltf.scene;
-            console.log('Tennis racket loaded successfully:', model);
-            modelLoaded = true;
-            model.scale.set(7, 7, 7);
-            model.position.set(1.5, -5, 0);
-            model.rotation.y = 0;
-            model.rotation.z = 0;
-            model.rotation.x = 0;
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            group.add(model);
-        }, (progress) => {
-            console.log('Loading tennis racket:', Math.round(progress.loaded / progress.total * 100) + '%');
-        }, (error) => {
-            console.error('Error loading Racket-compressed.glb:', error);
-            createFallbackMesh(group, 0xa78bfa);
-        });
-        
-        setTimeout(() => {
-            if (!modelLoaded && group.children.length === 0) {
-                console.warn('Tennis model did not load within 5 seconds, using fallback');
-                createFallbackMesh(group, 0xa78bfa);
-            }
-        }, 5000);
-    } else {
-        console.error('GLTFLoader not initialized');
-        createFallbackMesh(group, 0xa78bfa);
-    }
-    return group;
-}
-
-function createFallbackMesh(group, color) {
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
-    const material = new THREE.MeshPhongMaterial({
-        color: color,
-        emissive: 0x2a4a5a,
-        shininess: 100
+    // Add wheels for visual appeal
+    this.addWheels();
+  },
+  
+  addWheels() {
+    const wheelGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.4, 8);
+    const wheelMaterial = new THREE.MeshToonMaterial({ color: 0x111111 });
+    
+    const wheelPositions = [
+      [-1, 0.5, 1],   // Front left
+      [1, 0.5, 1],    // Front right
+      [-1, 0.5, -1],  // Back left
+      [1, 0.5, -1]    // Back right
+    ];
+    
+    wheelPositions.forEach(pos => {
+      const wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+      wheel.rotation.z = Math.PI / 2;
+      wheel.position.set(pos[0], pos[1], pos[2]);
+      wheel.castShadow = false;
+      wheel.receiveShadow = false;
+      this.mesh.add(wheel);
     });
-    group.add(new THREE.Mesh(geometry, material));
-}
-
-function createMe() {
-    const group = new THREE.Group();
-    if (loader) {
-        loader.load('Objects/Me.glb', (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(.05, .05, .05);
-            model.position.set(0, -2, 0);
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            group.add(model);
-        }, undefined, (error) => {
-            console.error('Error loading Me.glb:', error);
-        });
-    } else {
-        console.error('GLTFLoader not initialized');
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x64c8ff,
-            emissive: 0x2a4a5a,
-            shininess: 100
-        });
-        group.add(new THREE.Mesh(geometry, material));
+  },
+  
+  update(keys) {
+    // Handle input
+    let accelerating = false;
+    let decelerating = false;
+    let turningLeft = false;
+    let turningRight = false;
+    
+    if (keys['W'] || keys['w']) accelerating = true;
+    if (keys['S'] || keys['s']) decelerating = true;
+    if (keys['A'] || keys['a']) turningLeft = true;
+    if (keys['D'] || keys['d']) turningRight = true;
+    
+    // Apply acceleration/deceleration
+    if (accelerating) {
+      this.velocity.z -= this.acceleration;
     }
-    return group;
-}
-
-function createCar() {
-    const group = new THREE.Group();
-    if (loader) {
-        loader.load('Objects/audi_com.glb', (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(.65, .65, .65);
-            model.position.set(0, -1, 0);
-            model.rotation.y = 1.5;
-            model.rotation.z = 0;
-            model.rotation.x = 0;
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            group.add(model);
-
-            // AI assested code start
-
-            // --- new: collect wheel meshes by name (wheel|rim|tyre|tire) and save on model ---
-            const wheels = [];
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    const name = (child.name || '').toLowerCase();
-                    if (/wheel|rim|tyre|tire/.test(name)) {
-                        wheels.push(child);
-                    }
-                }
-            });
-            model.userData.wheels = wheels;
-            if (wheels.length === 0) {
-                console.warn('No wheels detected in car model. Check child names in the model (open console to inspect).');
-            }
-            // --- end new ---
-            // AI assisted code start
-        }, undefined, (error) => {
-            console.error('Error loading Laptop.glb:', error);
-        });
-    } else {
-        console.error('GLTFLoader not initialized');
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x64c8ff,
-            emissive: 0x2a4a5a,
-            shininess: 100
-        });
-        group.add(new THREE.Mesh(geometry, material));
+    if (decelerating) {
+      this.velocity.z += this.acceleration * 0.5; // Slower when reversing
     }
-    return group;
-}
-
-function createRunning() {
-    const group = new THREE.Group();
-    if (loader) {
-        loader.load('Objects/Running.glb', (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(2, 2, 2);
-            model.position.set(0, 0, 0);
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            group.add(model);
-        }, undefined, (error) => {
-            console.error('Error loading Laptop.glb:', error);
-        });
-    } else {
-        console.error('GLTFLoader not initialized');
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x64c8ff,
-            emissive: 0x2a4a5a,
-            shininess: 100
-        });
-        group.add(new THREE.Mesh(geometry, material));
+    
+    // Apply friction
+    this.velocity.z *= this.friction;
+    
+    // Clamp speed
+    if (this.velocity.z > this.maxSpeed) this.velocity.z = this.maxSpeed;
+    if (this.velocity.z < -this.maxSpeed * 0.6) this.velocity.z = -this.maxSpeed * 0.6;
+    
+    // Apply rotation (steering)
+    if (turningLeft) {
+      this.rotation += this.rotationSpeed;
     }
-    return group;
-}
-
-function createHardware() {
-    const group = new THREE.Group();
-    if (loader) {
-        loader.load('Objects/Camera.glb', (gltf) => {
-            const model = gltf.scene;
-            model.scale.set(.8, .8, .8);
-            model.position.set(0, -1, 0);
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            group.add(model);
-        }, undefined, (error) => {
-            console.error('Error loading Camera.glb:', error);
-        });
-    } else {
-        console.error('GLTFLoader not initialized');
-        const geometry = new THREE.BoxGeometry(2, 2, 2);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x64c8ff,
-            emissive: 0x2a4a5a,
-            shininess: 100
-        });
-        group.add(new THREE.Mesh(geometry, material));
+    if (turningRight) {
+      this.rotation -= this.rotationSpeed;
     }
-    return group;
-}
+    
+    // Calculate movement in car's local coordinate system
+    const moveX = Math.sin(this.rotation) * this.velocity.z;
+    const moveZ = Math.cos(this.rotation) * this.velocity.z;
+    
+    // Update position
+    this.position.x += moveX;
+    this.position.z += moveZ;
+    
+    // Clamp position to ground bounds
+    const bounds = 240;
+    if (this.position.x > bounds) this.position.x = bounds;
+    if (this.position.x < -bounds) this.position.x = -bounds;
+    if (this.position.z > bounds) this.position.z = bounds;
+    if (this.position.z < -bounds) this.position.z = -bounds;
+    
+    // Update mesh
+    this.mesh.position.copy(this.position);
+    this.mesh.rotation.y = this.rotation;
+  }
+};
 
-// Handle scroll events
-let scrollProgress = 0;
-window.addEventListener('scroll', () => {
-    scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+car.init();
+
+// ============================================================================
+// INPUT HANDLING
+// ============================================================================
+
+const keys = {};
+
+window.addEventListener('keydown', (e) => {
+  keys[e.key] = true;
 });
 
-//Responisveness
+window.addEventListener('keyup', (e) => {
+  keys[e.key] = false;
+});
+
+// ============================================================================
+// CAMERA FOLLOW (LERP)
+// ============================================================================
+
+const cameraOffset = new THREE.Vector3(0, 15, 25);
+
+function updateCameraFollow() {
+  // Target position is offset from car position
+  const targetX = car.position.x + Math.sin(car.rotation) * cameraOffset.z;
+  const targetY = car.position.y + cameraOffset.y;
+  const targetZ = car.position.z + Math.cos(car.rotation) * cameraOffset.z;
+  
+  const targetPosition = new THREE.Vector3(targetX, targetY, targetZ);
+  
+  // Smooth camera follow using lerp
+  const lerpFactor = 0.1;
+  camera.position.lerp(targetPosition, lerpFactor);
+  
+  // Make camera look at car with slight upward offset
+  const lookAtPoint = car.position.clone();
+  lookAtPoint.y += 2;
+  camera.lookAt(lookAtPoint);
+}
+
+// ============================================================================
+// WINDOW RESIZE HANDLING
+// ============================================================================
+
 window.addEventListener('resize', () => {
-    scenes.forEach((sceneData, index) => {
-        const canvas = document.getElementById(`canvas-${index}`);
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        
-        sceneData.camera.aspect = width / height;
-        sceneData.camera.updateProjectionMatrix();
-        renderers[index].setSize(width, height);
-    });
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Animations for each object individually
+// ============================================================================
+// ANIMATION LOOP
+// ============================================================================
+
 function animate() {
-    requestAnimationFrame(animate);
-
-    // Get scroll position
-    const scrollRotation = window.scrollY * 0.005;
-
-    scenes.forEach((sceneData, index) => {
-
-        // Laptop animation
-        if (sceneData.sectionIndex == 3){
-            sceneData.mesh.rotation.y = scrollRotation * 1.5 + Math.cos(Date.now() * 0.0005) * 0.03;
-            sceneData.mesh.rotation.x = scrollRotation + Math.sin(Date.now() * 0.0005) * 0.2;
-        }
- 
-        // Tennis animation
-        if (sceneData.sectionIndex === 1) {
-            const canvas = document.getElementById(`canvas-${index}`);
-            const rect = canvas.getBoundingClientRect();
-
-            let progress = 1 - (rect.top / window.innerHeight);
-            progress = Math.max(0, Math.min(1, progress));
-
-            const targetZ = 1.1 * progress;
-            const targetY = -0.4 * progress;
-            const targetX = 0.3 * progress;
-
-            const startX= 3;
-            const endX = -1;
-            const targetPositionX = startX + (endX - startX) * progress;
-
-            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
-            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
-            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
-
-            sceneData.mesh.position.x += (targetPositionX - sceneData.mesh.position.x || 0) * 0.12;
-        }
-
-        // Car animation
-        if (sceneData.sectionIndex === 2) {
-            const canvas = document.getElementById(`canvas-${index}`);
-            const rect = canvas.getBoundingClientRect();
-
-            let progress = .7 - (rect.top / window.innerHeight);
-            progress = Math.max(0, Math.min(1, progress));
-
-            const targetY = -0.8 * progress;
-            const targetX = 0 * progress;
-            const targetZ = 0 * progress;
-
-
-            const startX= -5;
-            const endX = -1;
-            const targetPositionX = startX + (endX - startX) * progress;
-
-            sceneData.mesh.rotation.y += (targetY - (sceneData.mesh.rotation.y || 0)) * 0.12;
-            sceneData.mesh.rotation.x += (targetX - (sceneData.mesh.rotation.x || 0)) * 0.12;
-            sceneData.mesh.rotation.z += (targetZ - (sceneData.mesh.rotation.z || 0)) * 0.12;
-
-            sceneData.mesh.position.x += (targetPositionX - (sceneData.mesh.position.x || 0)) * 0.12;
-
-            const model = (sceneData.mesh && sceneData.mesh.children && sceneData.mesh.children[0]) ? sceneData.mesh.children[0] : sceneData.mesh;
-            const wheels = model && model.userData ? model.userData.wheels || [] : [];
-            if (wheels.length > 0) {
-                const speed = 20; 
-                if(progress < 1){
-                wheels.forEach(w => {
-                    w.rotation.x -= speed;
-                });
-            }
-            }
-        }
-        renderers[index].render(sceneData.scene, sceneData.camera);
-    });
+  requestAnimationFrame(animate);
+  
+  // Update car
+  car.update(keys);
+  
+  // Update camera
+  updateCameraFollow();
+  
+  // Render
+  renderer.render(scene, camera);
 }
 
-// Initialize all scenes
-document.addEventListener('DOMContentLoaded', () => {
-    for (let i = 0; i < 4; i++) {
-        initScene(i);
-    }
-    animate();
-});
-
+animate();
+})();
