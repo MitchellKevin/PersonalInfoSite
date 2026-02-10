@@ -83,7 +83,7 @@ function createBoard() {
 //   board.rotation.y = Math.PI / -2; //turn 2
 //   board.rotation.y = Math.PI / -1; //turn 3
 //   board.rotation.y = Math.PI / 2; //final turn
-  board.rotation.z = Math.PI / 2; //start scene
+//   board.rotation.z = Math.PI / 2; //start scene
 
   board.receiveShadow = true;
 
