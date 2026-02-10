@@ -237,3 +237,52 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// === KAART POP-UP ===
+function showCard(info) {
+    const card = document.getElementById('cardPopup');
+    card.textContent = info; // je feitjes hier
+    card.classList.add('visible');
+
+    setTimeout(() => {
+        card.classList.remove('visible');
+    }, 2000);
+}
+
+function movePawn(steps) {
+    if (moving) return;
+    moving = true;
+    let remaining = steps;
+
+    function step() {
+        if (remaining <= 0) {
+            moving = false;
+
+            // === POP-UP ALS PAWN OP TILE STAAT ===
+            const info = `Dit is tile #${currentTile}: Feitje over mij!`;
+            showCard(info);
+
+            return;
+        }
+
+        const nextIndex = (currentTile + 1) % tiles.length;
+        const target = tiles[nextIndex];
+
+        function animateStep() {
+            pawnGroup.position.lerp(target, 0.12);
+            pawnGroup.lookAt(target.x, pawnGroup.position.y, target.z);
+
+            if (pawnGroup.position.distanceTo(target) < 0.02) {
+                pawnGroup.position.copy(target);
+                currentTile = nextIndex;
+                remaining--;
+                step();
+            } else {
+                requestAnimationFrame(animateStep);
+            }
+        }
+        animateStep();
+    }
+
+    step();
+}

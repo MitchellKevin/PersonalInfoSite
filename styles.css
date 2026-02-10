@@ -56,3 +56,30 @@ h1 {
     width: 6em;
     height: 6em;
 }
+
+/* POPUP */
+.card-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 400px;
+    background-image: url('Objects/mycard.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    text-shadow: 1px 1px 2px black;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+.card-popup.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+}
