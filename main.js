@@ -113,16 +113,16 @@ for (let i = 0; i < 9; i++) {
 
 // === PAWN (3D SHAPES) ===
 const pawnGroup = new THREE.Group();
-const baseGeom = new THREE.CylinderGeometry(0.3, 0.3, 0.4, 32);
+const baseGeom = new THREE.CylinderGeometry(0.3, 0.3, 0.6, 32);
 const baseMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 const baseMesh = new THREE.Mesh(baseGeom, baseMat);
 baseMesh.position.y = 0.2;
 pawnGroup.add(baseMesh);
 
 const headGeom = new THREE.SphereGeometry(0.2, 32, 32);
-const headMat = new THREE.MeshStandardMaterial({ color: 0xff5555 });
+const headMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 const headMesh = new THREE.Mesh(headGeom, headMat);
-headMesh.position.y = 0.55;
+headMesh.position.y = 0.65;
 pawnGroup.add(headMesh);
 
 let currentTile = tiles.length - 10;
@@ -175,7 +175,7 @@ function rollDiceOverBoard(diceMesh){
   );
 
   // random eindface
-  const targetFace = Math.floor(Math.random()*6); // 0-5
+  const targetFace = Math.floor(Math.random()*6);
   const targetEuler = new THREE.Euler(
     [0,Math.PI/2,-Math.PI/2,Math.PI,0,0][targetFace],
     [0,0,0,0,Math.PI/2,-Math.PI/2][targetFace],
@@ -200,7 +200,7 @@ function rollDiceOverBoard(diceMesh){
       } else {
         diceMesh.position.copy(targetPos);
         diceMesh.rotation.copy(targetEuler);
-        resolve(targetFace+1); // 1-6
+        resolve(targetFace+1);
       }
     }
     animateStep();
