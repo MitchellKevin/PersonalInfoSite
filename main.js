@@ -36,27 +36,63 @@ scene.add(board);
 
 // === TILE POSITIES ===
 const tiles = [];
-const min = -5.8, max = 5.8, step = (max - min) / 9;
 
-// Linkerkant: z van max -> min
-for (let i = 0; i < 10; i++) {
-  tiles.push(new THREE.Vector3(min, 0.2, max - step * i));
+const boardMin = -5.8;
+const boardMax = 5.8;
+const cornerSize = 1.5; // grootte van hoekvak
+const y = 0.2;
+
+// ruimte tussen hoeken
+const innerMin = boardMin + cornerSize;
+const innerMax = boardMax - cornerSize;
+const normalStep = (innerMax - innerMin) / 8; // 9 normale tiles
+
+// ===== LINKERKANT (boven → onder) =====
+tiles.push(new THREE.Vector3(boardMin, y, boardMax)); // hoek linksboven
+
+for (let i = 0; i < 9; i++) {
+  tiles.push(new THREE.Vector3(
+    boardMin,
+    y,
+    innerMax - normalStep * i
+  ));
 }
 
-// Onderkant: x van min -> max
-for (let i = 1; i < 10; i++) {
-  tiles.push(new THREE.Vector3(min + step * i, 0.2, min));
+tiles.push(new THREE.Vector3(boardMin, y, boardMin)); // hoek linksonder
+
+// ===== ONDERKANT (links → rechts) =====
+tiles.push(new THREE.Vector3(boardMin, y, boardMin)); // hoek linksonder (logisch, maar niet dubbel tellen)
+
+for (let i = 0; i < 9; i++) {
+  tiles.push(new THREE.Vector3(
+    innerMin + normalStep * i,
+    y,
+    boardMin
+  ));
 }
 
-// Rechterkant: z van min -> max
-for (let i = 1; i < 10; i++) {
-  tiles.push(new THREE.Vector3(max, 0.2, min + step * i));
+tiles.push(new THREE.Vector3(boardMax, y, boardMin)); // hoek rechtsonder
+
+// ===== RECHTERKANT (onder → boven) =====
+for (let i = 0; i < 9; i++) {
+  tiles.push(new THREE.Vector3(
+    boardMax,
+    y,
+    innerMin + normalStep * i
+  ));
 }
 
-// Bovenkant: x van max -> min
-for (let i = 1; i < 10; i++) {
-  tiles.push(new THREE.Vector3(max - step * i, 0.2, max));
+tiles.push(new THREE.Vector3(boardMax, y, boardMax)); // hoek rechtsboven
+
+// ===== BOVENKANT (rechts → links) =====
+for (let i = 0; i < 9; i++) {
+  tiles.push(new THREE.Vector3(
+    innerMax - normalStep * i,
+    y,
+    boardMax
+  ));
 }
+
 
 // === PAWN (3D SHAPES) ===
 const pawnGroup = new THREE.Group();
@@ -272,8 +308,24 @@ function movePawn(steps) {
                 hotel: 0
             };
             showPropertyCard(info);
-             if(currentTile === 28 || currentTile === 30) {
-        document.getElementsByClassName('card-header')[0].style.background = '#df0808';
+             if(currentTile === 32 || currentTile === 34) {
+        document.getElementsByClassName('card-header')[0].style.background = '#c56b04';
+      }else if(currentTile === 37 || currentTile === 39 || currentTile === 40){
+        document.getElementsByClassName('card-header')[0].style.background = '#86e3ff';
+      }else if(currentTile === 1 || currentTile === 3 || currentTile === 4){
+        document.getElementsByClassName('card-header')[0].style.background = '#ff6ecf';
+      }else if(currentTile === 6 || currentTile === 8 || currentTile === 9){
+        document.getElementsByClassName('card-header')[0].style.background = '#ff9838';
+      }else if(currentTile === 12 || currentTile === 14 || currentTile === 15){
+        document.getElementsByClassName('card-header')[0].style.background = '#c50000';
+      }else if(currentTile === 17 || currentTile === 18 || currentTile === 20){
+        document.getElementsByClassName('card-header')[0].style.background = '#fffb00';
+      }else if(currentTile === 22 || currentTile === 23 || currentTile === 24){
+        document.getElementsByClassName('card-header')[0].style.background = '#8bc768';
+      }else if(currentTile === 28 || currentTile === 30){
+        document.getElementsByClassName('card-header')[0].style.background = '#0569ff';
+      }else{
+        document.getElementsByClassName('card-header')[0].style.background = '#ffffff';
       }
             return;
         }
