@@ -10,6 +10,9 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 7, 12);
 camera.lookAt(0, 0, 0);
+let cameraAngle = 0; // in radialen
+let targetCameraAngle = 0;
+
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setClearColor(0x0a0a0a, 0);
@@ -35,14 +38,25 @@ scene.add(board);
 const tiles = [];
 const min = -5.8, max = 5.8, step = (max - min) / 9;
 
-// Bovenkant: x van min->max, z = max
-for(let i=0;i<10;i++) tiles.push(new THREE.Vector3(min + step*i,0.2,max));
-// Rechterkant: x=max, z van max->min
-for(let i=1;i<10;i++) tiles.push(new THREE.Vector3(max,0.2,max - step*i));
-// Onderkant: x van max->min, z=min
-for(let i=1;i<10;i++) tiles.push(new THREE.Vector3(max - step*i,0.2,min));
-// Linkerkant: x=min, z van min->max
-for(let i=1;i<10;i++) tiles.push(new THREE.Vector3(min,0.2,min + step*i));
+// Linkerkant: z van max -> min
+for (let i = 0; i < 10; i++) {
+  tiles.push(new THREE.Vector3(min, 0.2, max - step * i));
+}
+
+// Onderkant: x van min -> max
+for (let i = 1; i < 10; i++) {
+  tiles.push(new THREE.Vector3(min + step * i, 0.2, min));
+}
+
+// Rechterkant: z van min -> max
+for (let i = 1; i < 10; i++) {
+  tiles.push(new THREE.Vector3(max, 0.2, min + step * i));
+}
+
+// Bovenkant: x van max -> min
+for (let i = 1; i < 10; i++) {
+  tiles.push(new THREE.Vector3(max - step * i, 0.2, max));
+}
 
 // === PAWN (3D SHAPES) ===
 const pawnGroup = new THREE.Group();
@@ -58,44 +72,57 @@ const headMesh = new THREE.Mesh(headGeom, headMat);
 headMesh.position.y = 0.55;
 pawnGroup.add(headMesh);
 
-pawnGroup.position.copy(tiles[0]);
+let currentTile = tiles.length - 10;
+pawnGroup.position.copy(tiles[currentTile]);
 scene.add(pawnGroup);
 
-let currentTile = 0;
 let moving = false;
 
-// === MOVE FUNCTION ===
-function movePawn(steps) {
-  if (moving) return;
-  moving = true;
-  let remaining = steps;
+// === CAMERA CONTROLS ===
+function updateCamera() {
+  cameraAngle += (targetCameraAngle - cameraAngle) * 0.08;
 
-  function step() {
-    if (remaining <= 0) {
-      moving = false;
-      return;
-    }
-    const nextIndex = (currentTile + 1) % tiles.length;
-    const target = tiles[nextIndex];
+  const radius = 12;
+  camera.position.x = Math.sin(cameraAngle) * radius;
+  camera.position.z = Math.cos(cameraAngle) * radius;
+  camera.position.y = 7;
 
-    function animateStep() {
-      pawnGroup.position.lerp(target, 0.12);
-      pawnGroup.lookAt(target.x, pawnGroup.position.y, target.z);
-
-      if (pawnGroup.position.distanceTo(target) < 0.02) {
-        pawnGroup.position.copy(target);
-        currentTile = nextIndex;
-        remaining--;
-        step();
-      } else {
-        requestAnimationFrame(animateStep);
-      }
-    }
-    animateStep();
-  }
-
-  step();
+  camera.lookAt(0, 0, 0);
 }
+
+
+// === MOVE FUNCTION ===
+// function movePawn(steps) {
+//   if (moving) return;
+//   moving = true;
+//   let remaining = steps;
+
+//   function step() {
+//     if (remaining <= 0) {
+//       moving = false;
+//       return;
+//     }
+//     const nextIndex = (currentTile + 1) % tiles.length;
+//     const target = tiles[nextIndex];
+
+//     function animateStep() {
+//       pawnGroup.position.lerp(target, 0.12);
+//       pawnGroup.lookAt(target.x, pawnGroup.position.y, target.z);
+
+//       if (pawnGroup.position.distanceTo(target) < 0.02) {
+//         pawnGroup.position.copy(target);
+//         currentTile = nextIndex;
+//         remaining--;
+//         step();
+//       } else {
+//         requestAnimationFrame(animateStep);
+//       }
+//     }
+//     animateStep();
+//   }
+
+//   step();
+// }
 
 // === DICE SETUP ===
 const diceSize = 0.5;
@@ -103,14 +130,14 @@ const diceSize = 0.5;
 // 2 dobbelstenen
 const dice1 = new THREE.Mesh(
   new THREE.BoxGeometry(diceSize,diceSize,diceSize),
-  new THREE.MeshStandardMaterial({color:0xffffff})
+  new THREE.MeshStandardMaterial({color:0x000000})
 );
 dice1.position.set(-1,2,0);
 scene.add(dice1);
 
 const dice2 = new THREE.Mesh(
   new THREE.BoxGeometry(diceSize,diceSize,diceSize),
-  new THREE.MeshStandardMaterial({color:0xffffff})
+  new THREE.MeshStandardMaterial({color:0x000000})
 );
 dice2.position.set(1,2,0);
 scene.add(dice2);
@@ -227,6 +254,7 @@ function showDiceResult(value1, value2) {
 // === ANIMATE LOOP ===
 function animate() {
   requestAnimationFrame(animate);
+  updateCamera();
   renderer.render(scene, camera);
 }
 animate();
@@ -294,8 +322,19 @@ function movePawn(steps) {
         const target = tiles[nextIndex];
 
         function animateStep() {
+            console.log(currentTile)
             pawnGroup.position.lerp(target, 0.12);
             pawnGroup.lookAt(target.x, pawnGroup.position.y, target.z);
+
+            if (currentTile >27 && currentTile < 37) {
+                  targetCameraAngle = 0; // 90 graden draaien
+      }else if (currentTile > 0 && currentTile < 10) {
+                  targetCameraAngle = Math.PI / -2; // 90 graden draaien
+      }else if (currentTile > 9 && currentTile < 19) {
+                  targetCameraAngle = Math.PI; // 180 graden draaien
+      }else if (currentTile > 18 && currentTile < 28) {
+                  targetCameraAngle = -Math.PI / -2; // -90 graden draaien
+      }
 
             if (pawnGroup.position.distanceTo(target) < 0.02) {
                 pawnGroup.position.copy(target);
@@ -309,5 +348,7 @@ function movePawn(steps) {
         animateStep();
     }
 
+
     step();
 }
+
