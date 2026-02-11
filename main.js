@@ -295,7 +295,7 @@ function showPropertyCard(tileInfo) {
 
     setTimeout(() => {
         card.classList.remove('visible');
-    }, 10000);
+    }, 20000);
 }
 
 
