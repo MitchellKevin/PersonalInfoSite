@@ -239,15 +239,33 @@ window.addEventListener('resize', () => {
 });
 
 // === KAART POP-UP ===
-function showCard(info) {
-    const card = document.getElementById('cardPopup');
-    card.textContent = info; // je feitjes hier
-    card.classList.add('visible');
+function showPropertyCard(data) {
+  const card = document.getElementById('cardPopup');
 
-    setTimeout(() => {
-        card.classList.remove('visible');
-    }, 2000);
+  card.querySelector('.card-title').textContent = data.name;
+  card.querySelector('.rent-main').textContent = `RENT $${data.rent}`;
+
+  const rows = card.querySelectorAll('.rent-list div span:last-child');
+  rows[0].textContent = `$${data.house1}`;
+  rows[1].textContent = `$${data.house2}`;
+  rows[2].textContent = `$${data.house3}`;
+  rows[3].textContent = `$${data.hotel}`;
+
+  card.classList.add('visible');
+
+  setTimeout(() => {
+    card.classList.remove('visible');
+  }, 10000);
 }
+
+showPropertyCard({
+  name: "PETERPAN VILLA",
+  rent: 160,
+  house1: 200,
+  house2: 600,
+  house3: 1400,
+  hotel: 2000
+});
 
 function movePawn(steps) {
     if (moving) return;
@@ -259,8 +277,15 @@ function movePawn(steps) {
             moving = false;
 
             // === POP-UP ALS PAWN OP TILE STAAT ===
-            const info = `Dit is tile #${currentTile}: Feitje over mij!`;
-            showCard(info);
+            const info = {
+                name: `Tile #${currentTile}`,
+                rent: 0,
+                house1: 0,
+                house2: 0,
+                house3: 0,
+                hotel: 0
+            };
+            showPropertyCard(info);
 
             return;
         }

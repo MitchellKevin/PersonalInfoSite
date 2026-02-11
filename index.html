@@ -9,7 +9,28 @@
 <body>
     <h1>MONOPOLY</h1>
     <canvas id="gameCanvas"></canvas>
-    <div id="cardPopup" class="card-popup"></div>
+    <div id="cardPopup" class="monopoly-card">
+    <div class="card-header">
+        <div class="card-title-small">TITLE DEED</div>
+        <div class="card-title">PETERPAN VILLA</div>
+    </div>
+
+    <div class="card-body">
+        <div class="rent-main">RENT $160</div>
+
+        <div class="rent-list">
+        <div><span>With 1 House</span><span>$200</span></div>
+        <div><span>With 2 Houses</span><span>$600</span></div>
+        <div><span>With 3 Houses</span><span>$1400</span></div>
+        <div><span>With HOTEL</span><span>$2000</span></div>
+        </div>
+
+        <div class="card-footer">
+        If a player owns all the sites of any color group, the rent is doubled on unimproved sites.
+        </div>
+    </div>
+    </div>
+
     <button id="rollDiceBtn">🎲 Roll Dice</button>
 <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
 <script src="https://unpkg.com/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
