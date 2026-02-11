@@ -90,40 +90,6 @@ function updateCamera() {
   camera.lookAt(0, 0, 0);
 }
 
-
-// === MOVE FUNCTION ===
-// function movePawn(steps) {
-//   if (moving) return;
-//   moving = true;
-//   let remaining = steps;
-
-//   function step() {
-//     if (remaining <= 0) {
-//       moving = false;
-//       return;
-//     }
-//     const nextIndex = (currentTile + 1) % tiles.length;
-//     const target = tiles[nextIndex];
-
-//     function animateStep() {
-//       pawnGroup.position.lerp(target, 0.12);
-//       pawnGroup.lookAt(target.x, pawnGroup.position.y, target.z);
-
-//       if (pawnGroup.position.distanceTo(target) < 0.02) {
-//         pawnGroup.position.copy(target);
-//         currentTile = nextIndex;
-//         remaining--;
-//         step();
-//       } else {
-//         requestAnimationFrame(animateStep);
-//       }
-//     }
-//     animateStep();
-//   }
-
-//   step();
-// }
-
 // === DICE SETUP ===
 const diceSize = 0.5;
 
@@ -267,17 +233,17 @@ window.addEventListener('resize', () => {
 });
 
 // === KAART POP-UP ===
-function showPropertyCard(data) {
+function showPropertyCard(info) {
   const card = document.getElementById('cardPopup');
 
-  card.querySelector('.card-title').textContent = data.name;
-  card.querySelector('.rent-main').textContent = `RENT $${data.rent}`;
+  card.querySelector('.card-title').textContent = info.name;
+  card.querySelector('.rent-main').textContent = `RENT $${info.rent}`;
 
   const rows = card.querySelectorAll('.rent-list div span:last-child');
-  rows[0].textContent = `$${data.house1}`;
-  rows[1].textContent = `$${data.house2}`;
-  rows[2].textContent = `$${data.house3}`;
-  rows[3].textContent = `$${data.hotel}`;
+  rows[0].textContent = `$${info.house1}`;
+  rows[1].textContent = `$${info.house2}`;
+  rows[2].textContent = `$${info.house3}`;
+  rows[3].textContent = `$${info.hotel}`;
 
   card.classList.add('visible');
 
@@ -286,14 +252,6 @@ function showPropertyCard(data) {
   }, 10000);
 }
 
-showPropertyCard({
-  name: "PETERPAN VILLA",
-  rent: 160,
-  house1: 200,
-  house2: 600,
-  house3: 1400,
-  hotel: 2000
-});
 
 function movePawn(steps) {
     if (moving) return;
