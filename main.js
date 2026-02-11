@@ -27,17 +27,17 @@ async function getTileData(currentTile) {
 
         const tile = allTiles.find(t => t.id === currentTile);
 
-        return tile || { name: "Onbekend", info: "Geen info" };
+        return tile || { name: "Onbekend", info: "Geen info", streat: "Onbekend" };
     } catch (err) {
         // console.error("Kon tile data niet ophalen:", err);
-        // return { name: "Onbekend", info: "Geen info" };
+        // return { name: "Onbekend", info: "Geen info", streat: "Onbekend" };
     }
 }
 
 
 
 // === LIGHTING ===
-scene.add(new THREE.AmbientLight(0xffffff, 2));
+scene.add(new THREE.AmbientLight(0xffffff, 1.9));
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 dirLight.position.set(5, 10, 5);
 scene.add(dirLight);
@@ -290,7 +290,7 @@ function showPropertyCard(tileInfo) {
     const card = document.getElementById('cardPopup');
     card.querySelector('.card-title').textContent = tileInfo.name;
     card.querySelector('.rent-main').textContent = tileInfo.info;
-
+    card.querySelector('.card-title-small').textContent = tileInfo.streat;
     card.classList.add('visible');
 
     setTimeout(() => {
