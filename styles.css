@@ -120,104 +120,12 @@ h1 {
 
 .rent-main {
   text-align: center;
-  font-size: 20px;
+  font-size: 1em;
   font-weight: bold;
-  color: #e49a7a;
+  color: #3d3d3d;
   margin-bottom: 15px;
 }
 
-.rent-list div {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-}
-
-.mortgage {
-  text-align: center;
-  margin-top: 15px;
-  color: #e49a7a;
-}
-
-.mortgage p {
-  color: #000;
-  margin: 4px 0;
-}
-
-.card-footer {
-  font-size: 11px;
-  margin-top: 15px;
-  text-align: center;
-}
-.monopoly-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  width: 320px;
-  background: #fff;
-  border: 8px solid #000;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #000;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-.monopoly-card.visible {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* Header */
-.card-header {
-  background: #e49a7a;
-  border: 4px solid #000;
-  margin: 10px;
-  padding: 10px;
-  text-align: center;
-}
-
-.card-title-small {
-  font-size: 12px;
-  letter-spacing: 1px;
-}
-
-.card-title {
-  font-size: 24px;
-  font-weight: bold;
-  border-bottom: 2px solid #000;
-  margin-top: 5px;
-}
-
-/* Body */
-.card-body {
-  padding: 15px;
-}
-
-.rent-main {
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: #e49a7a;
-  margin-bottom: 15px;
-}
-
-.rent-list div {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-}
-
-.mortgage {
-  text-align: center;
-  margin-top: 15px;
-  color: #e49a7a;
-}
-
-.mortgage p {
-  color: #000;
-  margin: 4px 0;
-}
 
 .card-footer {
   font-size: 11px;

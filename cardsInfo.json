@@ -105,31 +105,156 @@
     "id": 22,
     "streat": "Loopbaan",
     "name": "Korte Stage",
-    "info": "..."
+    "info": "Ik heb mijn eerste stage rond gelopen als UX/UI Designer bij het bedrijf Ecocharting, wat een leuke tijd was dat zeg."
   },
   {
     "id": 23,
     "streat": "Loopbaan",
     "name": "Eigen bedrijf",
-    "info": "..."
+    "info": "Ik heb samen met een vriend een software bedrijf gestart waar we custom secure software bouwen voor bedrijven. Nog projecten stuur ons zeer gerust een berichtje :)"
   },
   {
     "id": 25,
     "streat": "Loopbaan",
     "name": "Appie Strijder",
-    "info": "..."
+    "info": "Werken bij de Appie (AH) das pas voor strijders, al zeg ik het zelf xD"
   },
     {
     "id": 28,
     "streat": "Eten",
-    "name": "GLUTEN ALLERGIE",
+    "name": "COELIAKIE",
     "info": "Ik ben nu al sinds mijn 15de gediagnosticeerd met een coeliakie, oftewel gluten allergie. Eet nu dus al 7 jaar geen gluten meer, mis die pilsjes nog steeds."
   },
   {
     "id": 30,
     "streat": "Eten",
-    "name": "ITALIAANS",
-    "info": "Ik eet eigenlijk alles wel, maar ik denk dat als ik nog maar één keuken zou moeten kiezen, het de Italiaanse zou zijn, zonder tijfel. Oh che bello"
+    "name": "ITALIAANSE KEUKEN",
+    "info": "Ik eet eigenlijk alles wel, maar ik denk dat als ik nog maar één keuken zou moeten kiezen, het de Italiaanse zou zijn, zonder tijfel. Oh che bello!"
   }
-  
+  ,
+  {
+    "id": 36,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 5,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 16,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 26,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 35,
+    "streat": "Tax",
+    "name": "IB",
+    "info": "Snel, ontduik de belastingdienst!"
+  }
+  ,
+  {
+    "id": 29,
+    "streat": "Tax",
+    "name": "Vermogensbelasting",
+    "info": "Snel, box 3 belasting overzetten naar box 1 belasting!"
+  }
+  ,
+  {
+    "id": 21,
+    "streat": "Jail",
+    "name": "Code Jail",
+    "info": "Das pech, je bent opgepakt door de code politie."
+  }
+  ,
+  {
+    "id": 19,
+    "streat": "Kraan",
+    "name": "De geldkraan",
+    "info": "De geldkraan is leeg, dat wordt werken"
+  }
+  ,
+  {
+    "id": 33,
+    "streat": "Schatkist",
+    "name": "Code Jail",
+    "info": "Salaris is gestort, nu lekker spenden!"
+  }
+  ,
+  {
+    "id": 7,
+    "streat": "Schatkist",
+    "name": "Code Jail",
+    "info": "Salaris is gestort, nu lekker spenden!"
+  }
+  ,
+  {
+    "id": 24,
+    "streat": "Schatkist",
+    "name": "Code Jail",
+    "info": "Salaris is gestort, nu lekker spenden!"
+  }
+  ,
+  {
+    "id": 38,
+    "streat": "Kans",
+    "name": "Studenten Data",
+    "info": "Oei, je hebt de studenten DB niet kunnen hacken, geen data ontvangen."
+  }
+  ,
+  {
+    "id": 13,
+    "streat": "Kans",
+    "name": "Studenten Data",
+    "info": "Oei, je hebt de studenten DB niet kunnen hacken, geen data ontvangen."
+  }
+  ,
+  {
+    "id": 27,
+    "streat": "Kans",
+    "name": "Studenten Data",
+    "info": "Oei, je hebt de studenten DB niet kunnen hacken, geen data ontvangen."
+  }
+  ,
+  {
+    "id": 2,
+    "streat": "Figma",
+    "name": "UI/UX",
+    "info": "WOW, je hebt een UI/UX designer gevonden!"
+  }
+  ,
+  {
+    "id": 11,
+    "streat": "Parkeren",
+    "name": "Gratis",
+    "info": "Gratis parkeren, dit kan vast geen Amsterdam zijn, waar de hell ben ik?"
+  }
+  ,
+  {
+    "id": 31,
+    "streat": "GO",
+    "name": "Langs Start",
+    "info": "Nog maar een rondje op de zaak dan maar."
+  }
+  ,
+  {
+    "id": 2,
+    "streat": "Jail",
+    "name": "Nog steeds?",
+    "info": "Yup, nog steeds in de code gevangenis, maak maar snel nieuwe code!"
+  }
 ]
