@@ -272,7 +272,9 @@ function movePawn(steps) {
                 hotel: 0
             };
             showPropertyCard(info);
-
+             if(currentTile === 28 || currentTile === 30) {
+        document.getElementsByClassName('card-header')[0].style.background = '#df0808';
+      }
             return;
         }
 
@@ -293,6 +295,7 @@ function movePawn(steps) {
       }else if (currentTile > 18 && currentTile < 28) {
                   targetCameraAngle = -Math.PI / -2; // -90 graden draaien
       }
+
 
             if (pawnGroup.position.distanceTo(target) < 0.02) {
                 pawnGroup.position.copy(target);
