@@ -347,7 +347,7 @@ function movePawn(steps) {
             pawnGroup.lookAt(target.x, pawnGroup.position.y, target.z);
 
             if (currentTile >27 && currentTile < 37) {
-                  targetCameraAngle = 0; // 90 graden draaien
+                  targetCameraAngle = 0; // 0 graden draaien
       }else if (currentTile > 0 && currentTile < 10) {
                   targetCameraAngle = Math.PI / -2; // 90 graden draaien
       }else if (currentTile > 9 && currentTile < 19) {
