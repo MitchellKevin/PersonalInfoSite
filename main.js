@@ -19,6 +19,23 @@ renderer.setClearColor(0x0a0a0a, 0);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 
+// === TILE DATA OPHALEN VIA API ===
+async function getTileData(currentTile) {
+    try {
+        const response = await fetch('cardsInfo.json'); 
+        const allTiles = await response.json();
+
+        const tile = allTiles.find(t => t.id === currentTile);
+
+        return tile || { name: "Onbekend", info: "Geen info" };
+    } catch (err) {
+        // console.error("Kon tile data niet ophalen:", err);
+        // return { name: "Onbekend", info: "Geen info" };
+    }
+}
+
+
+
 // === LIGHTING ===
 scene.add(new THREE.AmbientLight(0xffffff, 2));
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -269,24 +286,18 @@ window.addEventListener('resize', () => {
 });
 
 // === KAART POP-UP ===
-function showPropertyCard(info) {
-  const card = document.getElementById('cardPopup');
+function showPropertyCard(tileInfo) {
+    const card = document.getElementById('cardPopup');
+    card.querySelector('.card-title').textContent = tileInfo.name;
+    card.querySelector('.rent-main').textContent = tileInfo.info;
 
-  card.querySelector('.card-title').textContent = info.name;
-  card.querySelector('.rent-main').textContent = `RENT $${info.rent}`;
+    card.classList.add('visible');
 
-  const rows = card.querySelectorAll('.rent-list div span:last-child');
-  rows[0].textContent = `$${info.house1}`;
-  rows[1].textContent = `$${info.house2}`;
-  rows[2].textContent = `$${info.house3}`;
-  rows[3].textContent = `$${info.hotel}`;
-
-  card.classList.add('visible');
-
-  setTimeout(() => {
-    card.classList.remove('visible');
-  }, 10000);
+    setTimeout(() => {
+        card.classList.remove('visible');
+    }, 10000);
 }
+
 
 
 function movePawn(steps) {
@@ -298,16 +309,11 @@ function movePawn(steps) {
         if (remaining <= 0) {
             moving = false;
 
+            getTileData(currentTile).then(titleInfo => {
+
             // === POP-UP ALS PAWN OP TILE STAAT ===
-            const info = {
-                name: `Tile #${currentTile}`,
-                rent: 0,
-                house1: 0,
-                house2: 0,
-                house3: 0,
-                hotel: 0
-            };
-            showPropertyCard(info);
+
+            showPropertyCard(titleInfo);
              if(currentTile === 32 || currentTile === 34) {
         document.getElementsByClassName('card-header')[0].style.background = '#c56b04';
       }else if(currentTile === 37 || currentTile === 39 || currentTile === 40){
@@ -327,6 +333,8 @@ function movePawn(steps) {
       }else{
         document.getElementsByClassName('card-header')[0].style.background = '#ffffff';
       }
+
+            });
             return;
         }
 

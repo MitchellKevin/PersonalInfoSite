@@ -1,0 +1,113 @@
+[
+  {
+    "id": 32,
+    "name": "SCHILDPAD",
+    "info": "Hier begint alles!"
+  },
+  {
+    "id": 34,
+    "name": "KOOLMEES",
+    "info": "Ik hou van pizza 🍕"
+  },
+  {
+    "id": 37,
+    "name": "LEERDOEL 1",
+    "info": "Mijn favoriete kleur is blauw 💙"
+  },
+  {
+    "id": 39,
+    "name": "LEERDOEL 2",
+    "info": "Dit is een grote hoek!"
+  },
+    {
+    "id": 40,
+    "name": "LEERDOEL 3",
+    "info": "Hier begint alles!"
+  },
+  {
+    "id": 1,
+    "name": "HARDLOPEN",
+    "info": "Ik hou van pizza 🍕"
+  },
+  {
+    "id": 3,
+    "name": "KRACHTTRAINING",
+    "info": "Mijn favoriete kleur is blauw 💙"
+  },
+  {
+    "id": 4,
+    "name": "IRON MAN",
+    "info": "Dit is een grote hoek!"
+  },
+    {
+    "id": 6,
+    "name": "TECHNISCHE INFORMATICA",
+    "info": "Hier begint alles!"
+  },
+  {
+    "id": 8,
+    "name": "BEDRIJFSRECHT",
+    "info": "Ik hou van pizza 🍕"
+  },
+  {
+    "id": 9,
+    "name": "CMD",
+    "info": "Mijn favoriete kleur is blauw 💙"
+  },
+  {
+    "id": 12,
+    "name": "FOTOGRAFIE",
+    "info": "Dit is een grote hoek!"
+  },
+    {
+    "id": 14,
+    "name": "INVESTEREN",
+    "info": "Hier begint alles!"
+  },
+  {
+    "id": 15,
+    "name": "WERKEN",
+    "info": "Ik hou van pizza 🍕"
+  },
+  {
+    "id": 17,
+    "name": "POKER",
+    "info": "Mijn favoriete kleur is blauw 💙"
+  },
+  {
+    "id": 18,
+    "name": "YATHZEE",
+    "info": "Dit is een grote hoek!"
+  },
+    {
+    "id": 20,
+    "name": "MONOPOLY",
+    "info": "Hier begint alles!"
+  },
+  {
+    "id": 22,
+    "name": "GROEN 1",
+    "info": "Ik hou van pizza 🍕"
+  },
+  {
+    "id": 23,
+    "name": "GROEN 2",
+    "info": "Mijn favoriete kleur is blauw 💙"
+  },
+  {
+    "id": 24,
+    "name": "GROEN 3",
+    "info": "Dit is een grote hoek!"
+  },
+    {
+    "id": 28,
+    "name": "GLUTEN ALLERGIE",
+    "info": "Hier begint alles!"
+  },
+  {
+    "id": 30,
+    "name": "ITALIAANS",
+    "info": "Ik hou van pizza 🍕"
+  }
+  
+]
