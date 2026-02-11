@@ -326,7 +326,7 @@ function movePawn(steps) {
         document.getElementsByClassName('card-header')[0].style.background = '#c50000';
       }else if(currentTile === 17 || currentTile === 18 || currentTile === 20){
         document.getElementsByClassName('card-header')[0].style.background = '#fffb00';
-      }else if(currentTile === 22 || currentTile === 23 || currentTile === 24){
+      }else if(currentTile === 22 || currentTile === 23 || currentTile === 25){
         document.getElementsByClassName('card-header')[0].style.background = '#8bc768';
       }else if(currentTile === 28 || currentTile === 30){
         document.getElementsByClassName('card-header')[0].style.background = '#0569ff';
