@@ -191,21 +191,21 @@
   {
     "id": 33,
     "streat": "Schatkist",
-    "name": "Code Jail",
+    "name": "Salaris gestort",
     "info": "Salaris is gestort, nu lekker spenden!"
   }
   ,
   {
     "id": 7,
     "streat": "Schatkist",
-    "name": "Code Jail",
+    "name": "Salaris gestort",
     "info": "Salaris is gestort, nu lekker spenden!"
   }
   ,
   {
     "id": 24,
     "streat": "Schatkist",
-    "name": "Code Jail",
+    "name": "Salaris gestort",
     "info": "Salaris is gestort, nu lekker spenden!"
   }
   ,
@@ -252,7 +252,7 @@
   }
   ,
   {
-    "id": 2,
+    "id": 0,
     "streat": "Jail",
     "name": "Nog steeds?",
     "info": "Yup, nog steeds in de code gevangenis, maak maar snel nieuwe code!"
