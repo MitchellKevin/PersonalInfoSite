@@ -62,7 +62,7 @@ dirLight.position.set(5, 10, 5);
 scene.add(dirLight);
 
 // === BOARD ===
-const boardTexture = new THREE.TextureLoader().load('Objects/monopoly_board.png');
+const boardTexture = new THREE.TextureLoader().load('Objects/Board.png');
 const board = new THREE.Mesh(
   new THREE.BoxGeometry(13, 0.2, 13),
   new THREE.MeshStandardMaterial({ map: boardTexture })
