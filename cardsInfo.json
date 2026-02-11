@@ -1,0 +1,260 @@
+[
+  {
+    "id": 32,
+    "streat": "Dieren",
+    "name": "SCHILDPAD",
+    "info": "Mijn lievelingsdier is een schildpad, maar dan wel specifiek de zee schildpad uit Nemo."
+  },
+  {
+    "id": 34,
+    "streat": "Dieren",
+    "name": "Hamster",
+    "info": "Ik heb vroeger vier hamsters gehad, onderandere pitbull die altijd aan je vinger hing."
+  },
+  {
+    "id": 37,
+    "streat": "Leerdoelen",
+    "name": "LEERDOEL 1",
+    "info": "Ik wil leren om mijn websites interactiever te maken. Door bijv. 3D modellen, onScroll animaties en gamification toe te passen."
+  },
+  {
+    "id": 39,
+    "streat": "Leerdoelen",
+    "name": "LEERDOEL 2",
+    "info": "Mijn tweede leerdoel is dat ik meer wil leren over het ontwerpen van gebruiksvriendelijke interfaces, zodat mijn websites niet alleen mooi zijn, maar ook intuïtief in gebruik."
+  },
+    {
+    "id": 40,
+    "streat": "Leerdoelen",
+    "name": "LEERDOEL 3",
+    "info": "Mijn derde leerdoel is proberen om mijn ideeën beter te verwoorden en te presenteren, zodat ze duidelijker overkomen."
+  },
+  {
+    "id": 1,
+    "streat": "Sport",
+    "name": "HARDLOPEN",
+    "info": "Ik heb afgelopen jaar een passie gevonden voor de rust en discipline die komt kijken bij het hardlopen."
+  },
+  {
+    "id": 3,
+    "streat": "Sport",
+    "name": "KRACHTTRAINING",
+    "info": "Ik train graag krachttraining om mijn spieren te versterken en mijn algehele fitheid te verbeteren, maar dan wel lekker in mijn privé gym."
+  },
+  {
+    "id": 4,
+    "streat": "Sport",
+    "name": "IRON MAN",
+    "info": "Ik zou graag ooit nog een IRON MAN 70.3 (miles) willen doen, dit bestaat uit 1.9KM zwemmen, 90KM fietsen en 21.1KM hardlopen."
+  },
+    {
+    "id": 6,
+    "streat": "Studie",
+    "name": "TECHNISCHE INFORMATICA",
+    "info": "Ik heb als eerste HBO opleiding na de HAVO, Technische Informatica. Deze opleiding heeft mij veel geleerd over programmeren, maar wilde graag nog meer leren over ontwerpen"
+  },
+  {
+    "id": 8,
+    "streat": "Studie",
+    "name": "BEDRIJFSRECHT",
+    "info": "Ik heb tijdens mijn vorige minor bedrijfsrechten veel geleerd over de juridische aspecten van het bedrijfsleven en het was erg interessant."
+  },
+  {
+    "id": 9,
+    "streat": "Studie",
+    "name": "CMD",
+    "info": "Ik ben momenteel 3de jaars student op de opleiding Communicatie en Multimedia Design op de HvA."
+  },
+  {
+    "id": 12,
+    "streat": "Hobby",
+    "name": "FOTOGRAFIE",
+    "info": "Als ik op vakantie ga, neem ik graag mijn camera mee om de mooiste momenten vast te leggen. Ik ben een echte Sony fanboy"
+  },
+    {
+    "id": 14,
+    "streat": "Hobby",
+    "name": "INVESTEREN",
+    "info": "Ik vind investeren erg interessant en wie vind het nou niet leuk om zijn vermogen te zien groeien."
+  },
+  {
+    "id": 15,
+    "streat": "Hobby",
+    "name": "WERKEN",
+    "info": "Ik HAAT stilzitten, dus het lieftst ben ik de heledag druk bezig en mogelijk de beste oplossing hiervoor is werken, zodat ik mijn tijd nuttig kan besteden en gezellig geld kan verdienen"
+  },
+  {
+    "id": 17,
+    "streat": "Games",
+    "name": "POKER",
+    "info": "Misschien wel mijn favoriete spel, poker, speel het vaak met vrienden als we een midweek weg gaan en het is altijd een groot succes, vooral voor mij dan."
+  },
+  {
+    "id": 18,
+    "streat": "Games",
+    "name": "YATHZEE",
+    "info": "Dit is een spel wat ik vaak met mijn ouders speel en altijd lekker ontspannend is. Vooral lekker in Frankrijk aan de wijn."
+  },
+    {
+    "id": 20,
+    "streat": "Games",
+    "name": "MONOPOLY",
+    "info": "Dit spel is 100% mijn favoriet, enige nadeel is dat het zo lang duurt. Dit heeft ook de intresse in vastgoed aangewakkerd vanaf jonge leeftijd en dan ook de inspiratie van dit bord.."
+  },
+  {
+    "id": 22,
+    "streat": "Loopbaan",
+    "name": "Korte Stage",
+    "info": "Ik heb mijn eerste stage rond gelopen als UX/UI Designer bij het bedrijf Ecocharting, wat een leuke tijd was dat zeg."
+  },
+  {
+    "id": 23,
+    "streat": "Loopbaan",
+    "name": "Eigen bedrijf",
+    "info": "Ik heb samen met een vriend een software bedrijf gestart waar we custom secure software bouwen voor bedrijven. Nog projecten stuur ons zeer gerust een berichtje :)"
+  },
+  {
+    "id": 25,
+    "streat": "Loopbaan",
+    "name": "Appie Strijder",
+    "info": "Werken bij de Appie (AH) das pas voor strijders, al zeg ik het zelf xD"
+  },
+    {
+    "id": 28,
+    "streat": "Eten",
+    "name": "COELIAKIE",
+    "info": "Ik ben nu al sinds mijn 15de gediagnosticeerd met een coeliakie, oftewel gluten allergie. Eet nu dus al 7 jaar geen gluten meer, mis die pilsjes nog steeds."
+  },
+  {
+    "id": 30,
+    "streat": "Eten",
+    "name": "ITALIAANSE KEUKEN",
+    "info": "Ik eet eigenlijk alles wel, maar ik denk dat als ik nog maar één keuken zou moeten kiezen, het de Italiaanse zou zijn, zonder tijfel. Oh che bello!"
+  }
+  ,
+  {
+    "id": 36,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 5,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 16,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 26,
+    "streat": "NS",
+    "name": "DEFECTE TREIN",
+    "info": "Oei, dat is vervelend de trein is weer defect :("
+  }
+  ,
+  {
+    "id": 35,
+    "streat": "Tax",
+    "name": "IB",
+    "info": "Snel, ontduik de belastingdienst!"
+  }
+  ,
+  {
+    "id": 29,
+    "streat": "Tax",
+    "name": "Vermogensbelasting",
+    "info": "Snel, box 3 belasting overzetten naar box 1 belasting!"
+  }
+  ,
+  {
+    "id": 21,
+    "streat": "Jail",
+    "name": "Code Jail",
+    "info": "Das pech, je bent opgepakt door de code politie."
+  }
+  ,
+  {
+    "id": 19,
+    "streat": "Kraan",
+    "name": "De geldkraan",
+    "info": "De geldkraan is leeg, dat wordt werken"
+  }
+  ,
+  {
+    "id": 33,
+    "streat": "Schatkist",
+    "name": "Salaris gestort",
+    "info": "Salaris is gestort, nu lekker spenden!"
+  }
+  ,
+  {
+    "id": 7,
+    "streat": "Schatkist",
+    "name": "Salaris gestort",
+    "info": "Salaris is gestort, nu lekker spenden!"
+  }
+  ,
+  {
+    "id": 24,
+    "streat": "Schatkist",
+    "name": "Salaris gestort",
+    "info": "Salaris is gestort, nu lekker spenden!"
+  }
+  ,
+  {
+    "id": 38,
+    "streat": "Kans",
+    "name": "Studenten Data",
+    "info": "Oei, je hebt de studenten DB niet kunnen hacken, geen data ontvangen."
+  }
+  ,
+  {
+    "id": 13,
+    "streat": "Kans",
+    "name": "Studenten Data",
+    "info": "Oei, je hebt de studenten DB niet kunnen hacken, geen data ontvangen."
+  }
+  ,
+  {
+    "id": 27,
+    "streat": "Kans",
+    "name": "Studenten Data",
+    "info": "Oei, je hebt de studenten DB niet kunnen hacken, geen data ontvangen."
+  }
+  ,
+  {
+    "id": 2,
+    "streat": "Figma",
+    "name": "UI/UX",
+    "info": "WOW, je hebt een UI/UX designer gevonden!"
+  }
+  ,
+  {
+    "id": 11,
+    "streat": "Parkeren",
+    "name": "Gratis",
+    "info": "Gratis parkeren, dit kan vast geen Amsterdam zijn, waar de hell ben ik?"
+  }
+  ,
+  {
+    "id": 31,
+    "streat": "GO",
+    "name": "Langs Start",
+    "info": "Nog maar een rondje op de zaak dan maar."
+  }
+  ,
+  {
+    "id": 0,
+    "streat": "Jail",
+    "name": "Nog steeds?",
+    "info": "Yup, nog steeds in de code gevangenis, maak maar snel nieuwe code!"
+  }
+]

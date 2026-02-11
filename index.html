@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>MONOPOLY</title>
+</head>
+<body>
+    <h1>MITCHOPOLY</h1>
+    <button id="themeToggle" class="theme-toggle">
+        <img id="themeIcon" src="Objects/light_dark_mode/lightMode.png" alt="Toggle theme">
+    </button>
+    <canvas id="gameCanvas"></canvas>
+    <div id="cardPopup" class="monopoly-card">
+    <div class="card-header">
+        <div class="card-title-small">TITLE DEED</div>
+        <div class="card-title">PETERPAN VILLA</div>
+    </div>
+
+    <div class="card-body">
+        <div class="rent-main">RENT $160</div>
+
+        <div class="card-footer">
+        If a player owns all the sites of any color group, the rent is doubled on unimproved sites.
+        </div>
+    </div>
+    </div>
+
+    <button id="rollDiceBtn">🎲 Roll Dice</button>
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

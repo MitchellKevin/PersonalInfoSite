@@ -1,0 +1,150 @@
+/* Light / Dark variables */
+:root {
+  --bg-color: #f4f4f4;
+  --text-color: #111;
+  --card-bg: #ffffff;
+}
+
+body.dark {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --card-bg: #1a1a1a;
+}
+
+body{
+    text-align: center;
+    background-color: var(--bg-color);
+}
+
+h1 {
+  margin-top: 1.2em;
+  margin-bottom: -2.5em;
+  z-index: 1;
+  font-size: 17em;
+  font-family: 'Kabel Bold', sans-serif;
+  color: rgb(61, 61, 61);
+}
+
+#gameCanvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+
+
+#rollDiceBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  background: var(--text-color);
+  color: var(--bg-color);
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+#rollDiceBtn:hover {
+  background: #333;
+}
+
+.dice-eyes-overlay {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    padding: 20px 40px;
+    border-radius: 15px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 1;
+}
+
+.dice-face-img {
+    width: 6em;
+    height: 6em;
+}
+
+/* POPUP */
+.monopoly-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  width: 320px;
+  background: #fff;
+  border: 8px solid #000;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.monopoly-card.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Header */
+.card-header {
+  background: #e49a7a;
+  border: 4px solid #000;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.card-title-small {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+  margin-top: 5px;
+}
+
+/* Body */
+.card-body {
+  padding: 15px;
+}
+
+.rent-main {
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+  color: #3d3d3d;
+  margin-bottom: 15px;
+}
+
+
+.card-footer {
+  font-size: 11px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.theme-toggle img {
+  width: 5em;
+  height: 5em;
+}
+
