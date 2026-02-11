@@ -2,6 +2,25 @@
 const canvas = document.getElementById('gameCanvas');
 const scene = new THREE.Scene();
 
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+
+let isDark = true;
+
+// start in dark mode
+document.body.classList.add('dark');
+
+themeToggle.addEventListener('click', () => {
+  isDark = !isDark;
+  document.body.classList.toggle('dark');
+
+  // icon wisselen
+  themeIcon.src = isDark
+    ? 'Objects/light_dark_mode/lightMode.png'
+    : 'Objects/light_dark_mode/darkMode.png';
+});
+
+
 const camera = new THREE.PerspectiveCamera(
   60,
   window.innerWidth / window.innerHeight,
@@ -56,16 +75,16 @@ const tiles = [];
 
 const boardMin = -5.8;
 const boardMax = 5.8;
-const cornerSize = 1.5; // grootte van hoekvak
+const cornerSize = 1.5; 
 const y = 0.2;
 
 // ruimte tussen hoeken
 const innerMin = boardMin + cornerSize;
 const innerMax = boardMax - cornerSize;
-const normalStep = (innerMax - innerMin) / 8; // 9 normale tiles
+const normalStep = (innerMax - innerMin) / 8;
 
 // ===== LINKERKANT (boven → onder) =====
-tiles.push(new THREE.Vector3(boardMin, y, boardMax)); // hoek linksboven
+tiles.push(new THREE.Vector3(boardMin, y, boardMax));
 
 for (let i = 0; i < 9; i++) {
   tiles.push(new THREE.Vector3(
@@ -75,10 +94,10 @@ for (let i = 0; i < 9; i++) {
   ));
 }
 
-tiles.push(new THREE.Vector3(boardMin, y, boardMin)); // hoek linksonder
+tiles.push(new THREE.Vector3(boardMin, y, boardMin));
 
 // ===== ONDERKANT (links → rechts) =====
-tiles.push(new THREE.Vector3(boardMin, y, boardMin)); // hoek linksonder (logisch, maar niet dubbel tellen)
+tiles.push(new THREE.Vector3(boardMin, y, boardMin));
 
 for (let i = 0; i < 9; i++) {
   tiles.push(new THREE.Vector3(
@@ -88,7 +107,7 @@ for (let i = 0; i < 9; i++) {
   ));
 }
 
-tiles.push(new THREE.Vector3(boardMax, y, boardMin)); // hoek rechtsonder
+tiles.push(new THREE.Vector3(boardMax, y, boardMin));
 
 // ===== RECHTERKANT (onder → boven) =====
 for (let i = 0; i < 9; i++) {
@@ -99,7 +118,7 @@ for (let i = 0; i < 9; i++) {
   ));
 }
 
-tiles.push(new THREE.Vector3(boardMax, y, boardMax)); // hoek rechtsboven
+tiles.push(new THREE.Vector3(boardMax, y, boardMax));
 
 // ===== BOVENKANT (rechts → links) =====
 for (let i = 0; i < 9; i++) {
@@ -163,7 +182,7 @@ scene.add(dice2);
 
 // === DICE ROLL FUNCTION (over bord) ===
 function rollDiceOverBoard(diceMesh){
-  const steps = 60; // frames animatie (~1 sec)
+  const steps = 60; // frames animatie 1s
   let count = 0;
   
   // random eindpositie op bord
@@ -278,7 +297,6 @@ function animate() {
 }
 animate();
 
-// === WINDOW RESIZE ===
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -372,4 +390,6 @@ function movePawn(steps) {
 
     step();
 }
+
+
 
