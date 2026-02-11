@@ -63,6 +63,11 @@ scene.add(dirLight);
 
 // === BOARD ===
 const boardTexture = new THREE.TextureLoader().load('Objects/Board.png');
+boardTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+boardTexture.minFilter = THREE.LinearMipMapLinearFilter;
+boardTexture.magFilter = THREE.LinearFilter;
+boardTexture.generateMipmaps = true;
+boardTexture.needsUpdate = true;
 const board = new THREE.Mesh(
   new THREE.BoxGeometry(13, 0.2, 13),
   new THREE.MeshStandardMaterial({ map: boardTexture })
